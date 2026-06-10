@@ -1,26 +1,45 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #12131a;
+  --card: #1b1d26;
+  --card-hover: #232633;
+
+  --text: #ffffff;
+  --muted: #a1a1aa;
+
+  --accent: #58cc02;
+  --accent-dark: #46a302;
+
+  --gold: #ffd54f;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  font-size: 80%; /* Scales down all rem-based Tailwind utility classes */
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
 }
+
+@keyframes fire-glow {
+  0%, 100% {
+    box-shadow: 0 0 10px #ff4b4b, 0 0 20px #ff9600;
+    filter: brightness(1);
+  }
+  50% {
+    box-shadow: 0 0 20px #ff4b4b, 0 0 40px #ff9600;
+    filter: brightness(1.3);
+  }
+}
+
+.animate-fire {
+  animation: fire-glow 2s infinite ease-in-out;
+  background: linear-gradient(to bottom, #ff4b4b, #ff9600, #ffc800);
+}
+

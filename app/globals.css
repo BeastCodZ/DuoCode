@@ -19,7 +19,7 @@
 }
 
 html {
-  font-size: 80%; /* Scales down all rem-based Tailwind utility classes */
+  font-size: 80%;
 }
 
 body {

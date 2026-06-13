@@ -18,15 +18,14 @@ import {
   Medal, 
   CheckCircle2,
   MapPin,
-  Github,
-  Twitter,
-  Linkedin,
   Gem,
   Trophy,
   Award,
   ArrowUp,
-  ArrowDown
+  ArrowDown,
+  X
 } from "lucide-react";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 export default async function UserProfilePage({
   params,
@@ -135,17 +134,17 @@ export default async function UserProfilePage({
                         <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-6">
                             {data.profile.gitHub && (
                                 <a href={data.profile.gitHub} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-white transition-colors">
-                                    <Github size={20} />
+                                    <FaGithub size={20} />
                                 </a>
                             )}
                             {data.profile.twitter && (
                                 <a href={data.profile.twitter} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-white transition-colors">
-                                    <Twitter size={20} />
+                                    <X size={20} />
                                 </a>
                             )}
                             {data.profile.linkedIn && (
                                 <a href={data.profile.linkedIn} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-white transition-colors">
-                                    <Linkedin size={20} />
+                                    <FaLinkedin size={20} />
                                 </a>
                             )}
                         </div>

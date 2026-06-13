@@ -9,12 +9,12 @@ const nunito = Nunito({
 
 export const metadata: Metadata = {
   title: "UniLeet - Duolingo for LeetCode",
-  description: "Compare your LeetCode stats with friends in a vibrant, gamified interface.",
+  description: "LeetCode. Every developer starts here. Not every developer is seen again. Build streaks. Compete with friends or foes. The last person who forgot their streak disappeared under mysterious circumstances. We found his keyboard. Nothing else. Maintain your streak. Feed the algorithm. Ignore the scratching behind the Medium questions. Programa o desaparece. The Owl sends his regards.",
   keywords: ["LeetCode", "coding", "gamified", "competition", "stats", "friends", "UniLost", "BeastCodZ"],
   authors: [{ name: "BeastCodZ" }],
   openGraph: {
     title: "UniLeet - Duolingo for LeetCode",
-    description: "Compare your LeetCode stats with friends in a vibrant, gamified interface.",
+    description: "LeetCode. Every developer starts here. Not every developer is seen again. Build streaks. Compete with friends or foes. The last person who forgot their streak disappeared under mysterious circumstances. We found his keyboard. Nothing else. Maintain your streak. Feed the algorithm. Ignore the scratching behind the Medium questions. Programa o desaparece. The Owl sends his regards.",
     type: "website",
     url: "https://unileet.com",
     siteName: "UniLeet",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "UniLeet - Duolingo for LeetCode",
-    description: "Compare your LeetCode stats with friends in a vibrant, gamified interface.",
+    description: "LeetCode. Every developer starts here. Not every developer is seen again. Build streaks. Compete with friends or foes. The last person who forgot their streak disappeared under mysterious circumstances. We found his keyboard. Nothing else. Maintain your streak. Feed the algorithm. Ignore the scratching behind the Medium questions. Programa o desaparece. The Owl sends his regards.",
     images: ["/opengraph.jpg"],
   },
 };

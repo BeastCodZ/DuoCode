@@ -3,6 +3,7 @@ import BattleRow from "@/components/BattleRow";
 import BadgeIcon from "@/components/BadgeIcon";
 import { calculateStreak } from "@/lib/calender";
 import AnimateIn from "@/components/AnimateIn";
+import Image from "next/image"
 import { 
   Crown, 
   Calendar, 
@@ -28,9 +29,11 @@ function MiniProfile({ user, winner }: { user: FullUserData; winner?: boolean })
     <div className={`flex flex-col items-center gap-4 transition-transform duration-500 ${winner ? 'scale-110' : 'opacity-80'}`}>
       <div className="relative">
         <div className={`w-24 h-24 md:w-32 md:h-32 rounded-full border-4 ${winner ? 'border-[#ffc800]' : 'border-zinc-700'} p-1.5 bg-[#131f24] relative shadow-2xl`}>
-          <img
+          <Image
             src={user.profile.avatar}
             alt={user.profile.username}
+            width={64}
+            height={64}
             className="w-full h-full rounded-full object-cover"
           />
         </div>
@@ -101,14 +104,14 @@ export default async function ComparePage({ params }: Props) {
     const solvedTodaya = new Set(
     submissionsa
         .filter(sub =>
-        new Date(sub.timestamp * 1000).toDateString() === today
+        new Date(Number(sub.timestamp) * 1000).toDateString() === today
         )
         .map(sub => sub.titleSlug)
     ).size;
     const solvedTodayb = new Set(
     submissionsb
         .filter(sub =>
-        new Date(sub.timestamp * 1000).toDateString() === today
+        new Date(Number(sub.timestamp) * 1000).toDateString() === today
         )
         .map(sub => sub.titleSlug)
     ).size;

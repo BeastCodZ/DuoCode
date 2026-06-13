@@ -142,8 +142,9 @@ export default async function UserProfilePage({
                   <Image
                     src={data.profile.avatar}
                     alt={data.profile.username}
-                    width={64}
-                    height={64}
+                    width={200}
+                    height={200}
+                    priority
                     className="w-full h-full rounded-full object-cover"
                   />
                 </div>

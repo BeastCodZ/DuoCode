@@ -32,8 +32,9 @@ function MiniProfile({ user, winner }: { user: FullUserData; winner?: boolean })
           <Image
             src={user.profile.avatar}
             alt={user.profile.username}
-            width={64}
-            height={64}
+            width={200}
+            height={200}
+            priority
             className="w-full h-full rounded-full object-cover"
           />
         </div>

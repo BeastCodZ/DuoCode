@@ -152,6 +152,21 @@ export interface FullUserData {
   community: LeetCodeCommunity;
   languages: LeetCodeLanguageStats;
 }
+export interface LeetCodeProblem {
+  questionFrontendId: string;
+  questionTitle: string;
+  titleSlug: string;
+  difficulty: string;
+  isPaidOnly: boolean;
+  categoryTitle: string;
+}
+
+export interface LeetCodeProblemsResponse {
+  totalQuestions: number;
+  count: number;
+  problemsetQuestionList: LeetCodeProblem[];
+}
+
 
 async function get<T>(url: string): Promise<T> {
   const res = await fetch(url, {
@@ -168,6 +183,61 @@ async function get<T>(url: string): Promise<T> {
 export async function getDailyQuestion(): Promise<LeetCodeDaily> {
   return get<LeetCodeDaily>(`${API}/daily`);
 }
+export type DifficultyParam = "EASY" | "MEDIUM" | "HARD";
+
+/**
+ * Fetches a list of problems filtered by a specific difficulty level.
+ * @param difficulty - The desired problem level ('EASY', 'MEDIUM', 'HARD')
+ * @param limit - Max number of problems to return (defaults to 50)
+ * @param skip - Number of items to skip for pagination (defaults to 0)
+ */
+export async function getProblemsByDifficulty(
+  difficulty: DifficultyParam,
+  limit: number = 50,
+  skip: number = 0
+): Promise<LeetCodeProblemsResponse> {
+  const url = `${API}/problems?difficulty=${difficulty}&limit=${limit}&skip=${skip}`;
+  return get<LeetCodeProblemsResponse>(url);
+}
+
+/**
+ * Concurrent utility helper to fetch data buckets from Easy, Medium, and Hard profiles all at once.
+ */
+// Define an interface for the final totals object
+export interface LeetCodeTotalCountResponse {
+  totalQuestions: number;
+}
+
+
+/**
+ * Fetches the total count for a specific difficulty or all questions combined
+ * @param difficulty - Optional: 'EASY', 'MEDIUM', 'HARD'. Leave out for grand total.
+ */
+export async function getTotalQuestionCount(
+  difficulty?: "EASY" | "MEDIUM" | "HARD"
+): Promise<number> {
+  const queryParam = difficulty ? `?difficulty=${difficulty}&limit=1` : "?limit=1";
+  const url = `${API}/problems${queryParam}`;
+  
+  const data = await get<LeetCodeTotalCountResponse>(url);
+  return data.totalQuestions;
+}
+
+/**
+ * Fetches total counts for Easy, Medium, and Hard completely independently of any user data
+ */
+export async function getAllCategoryTotals(): Promise<{ easy: number; medium: number; hard: number; total: number }> {
+  const [easy, medium, hard, total] = await Promise.all([
+    getTotalQuestionCount("EASY"),
+    getTotalQuestionCount("MEDIUM"),
+    getTotalQuestionCount("HARD"),
+    getTotalQuestionCount(),
+  ]);
+
+  return { easy, medium, hard, total };
+}
+
+
 
 export async function getFullUser(
   username: string

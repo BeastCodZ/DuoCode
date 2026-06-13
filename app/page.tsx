@@ -82,7 +82,7 @@ export default function HomePage() {
         
         <AnimateIn direction="down" delay={0.1}>
             <div className="text-center mb-12">
-                <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-700">
+                <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-linear-to-b from-white to-zinc-700">
                     UniLeet
                 </h1>
                 <p className="text-xl md:text-2xl font-bold text-[#58cc02] mt-3 tracking-tight">
@@ -152,7 +152,7 @@ export default function HomePage() {
         {/* DAILY QUEST SECTION */}
         {daily && (
             <AnimateIn direction="up" delay={0.3}>
-                <div className="bg-[#202f36] border-2 border-b-8 border-[#1cb0f6] rounded-[32px] p-6 md:p-8 mb-10 relative overflow-hidden group">
+                <div className="bg-[#202f36] border-2 border-b-8 border-[#1cb0f6] rounded-4xl p-6 md:p-8 mb-10 relative overflow-hidden group">
                     <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform text-[#1cb0f6]">
                         <Target size={64} />
                     </div>
@@ -195,7 +195,7 @@ export default function HomePage() {
         <div className="grid md:grid-cols-2 gap-8">
           {/* PROFILE CARD */}
           <AnimateIn direction="left" delay={0.4} className="h-full">
-              <div className="bg-[#202f36] rounded-[32px] p-6 border-2 border-b-8 border-[#37464f] transition-transform hover:-translate-y-1 h-full flex flex-col">
+              <div className="bg-[#202f36] rounded-4xl p-6 border-2 border-b-8 border-[#37464f] transition-transform hover:-translate-y-1 h-full flex flex-col">
                 <h2 className="text-2xl font-black mb-6 flex items-center gap-3">
                   <span className="bg-[#1cb0f6] p-2 rounded-2xl text-white">
                     <User size={24} />
@@ -223,7 +223,7 @@ export default function HomePage() {
 
           {/* COMPARE CARD */}
           <AnimateIn direction="right" delay={0.5} className="h-full">
-              <div className="bg-[#202f36] rounded-[32px] p-6 border-2 border-b-8 border-[#37464f] transition-transform hover:-translate-y-1 h-full flex flex-col">
+              <div className="bg-[#202f36] rounded-4xl p-6 border-2 border-b-8 border-[#37464f] transition-transform hover:-translate-y-1 h-full flex flex-col">
                 <h2 className="text-2xl font-black mb-6 flex items-center gap-3">
                   <span className="bg-[#ce82ff] p-2 rounded-2xl text-white">
                     <Swords size={24} />

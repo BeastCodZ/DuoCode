@@ -1,7 +1,7 @@
 import { getFullUser, FullUserData } from "@/lib/leetcode";
 import BattleRow from "@/components/BattleRow";
 import BadgeIcon from "@/components/BadgeIcon";
-import { calculateStreak, getTodaySolved } from "@/lib/calender";
+import { calculateStreak } from "@/lib/calender";
 import AnimateIn from "@/components/AnimateIn";
 import { 
   Crown, 

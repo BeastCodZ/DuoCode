@@ -1,4 +1,4 @@
-import { getAllCategoryTotals, getFullUser } from "@/lib/leetcode";
+import { getFullUser } from "@/lib/leetcode";
 import { timeAgo } from "@/lib/timeAgo";
 import StatCard from "@/components/StatCard";
 import ProgressBar from "@/components/ProgressBar";
@@ -107,10 +107,9 @@ export default async function UserProfilePage({
   const acceptanceRate = ((acSub / totalSub) * 100).toFixed(1);
 
   // Skill stats preparation
-  const counts = await getAllCategoryTotals();
-  const easyTotal = counts.easy;
-  const mediumTotal = counts.medium;
-  const hardTotal = counts.hard;
+  const easyTotal = 949;
+  const mediumTotal = 2067;
+  const hardTotal = 942;
 
   // Get top skills from tagProblemCounts
   const allSkills = [
@@ -147,9 +146,6 @@ export default async function UserProfilePage({
                     priority
                     className="w-full h-full rounded-full object-cover"
                   />
-                </div>
-                <div className="absolute -bottom-2 -right-2 bg-[#ffc800] text-black text-3xl p-2 rounded-2xl border-4 border-[#202f36] shadow-xl">
-                  {league.icon}
                 </div>
               </div>
 

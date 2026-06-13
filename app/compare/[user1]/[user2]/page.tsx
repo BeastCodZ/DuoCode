@@ -1,8 +1,20 @@
 import { getFullUser, FullUserData } from "@/lib/leetcode";
 import BattleRow from "@/components/BattleRow";
 import BadgeIcon from "@/components/BadgeIcon";
-import { calculateStreak } from "@/lib/calender";
+import { calculateStreak, getTodaySolved } from "@/lib/calender";
 import AnimateIn from "@/components/AnimateIn";
+import { 
+  Crown, 
+  Calendar, 
+  CheckCircle2, 
+  Target, 
+  Swords, 
+  Flame, 
+  Handshake, 
+  MessageSquare, 
+  Lightbulb, 
+  Medal 
+} from "lucide-react";
 
 type Props = {
   params: Promise<{
@@ -23,8 +35,8 @@ function MiniProfile({ user, winner }: { user: FullUserData; winner?: boolean })
           />
         </div>
         {winner && (
-          <div className="absolute -top-5 -right-5 text-4xl animate-bounce">
-            👑
+          <div className="absolute -top-5 -right-5 text-[#ffc800] animate-bounce">
+            <Crown size={40} fill="currentColor" />
           </div>
         )}
       </div>
@@ -129,31 +141,38 @@ export default async function ComparePage({ params }: Props) {
                     </h3>
                     <div className="grid gap-3">
                         <BattleRow 
+                            label="Solved Today" 
+                            user1Value={getTodaySolved(a.calendar.submissionCalendar)} 
+                            user2Value={getTodaySolved(b.calendar.submissionCalendar)} 
+                            icon={<Calendar size={16} />}
+                            color="yellow"
+                        />
+                        <BattleRow 
                             label="Total Solved" 
                             user1Value={a.solved.solvedProblem} 
                             user2Value={b.solved.solvedProblem} 
-                            icon="✅"
+                            icon={<CheckCircle2 size={16} />}
                             color="green"
                         />
                         <BattleRow 
                             label="Acceptance Rate (%)" 
                             user1Value={getAcceptanceRate(a)} 
                             user2Value={getAcceptanceRate(b)} 
-                            icon="🎯"
+                            icon={<Target size={16} />}
                             color="blue"
                         />
                         <BattleRow 
                             label="Contest Rating" 
                             user1Value={Math.round(a.contests.contestRating || 0)} 
                             user2Value={Math.round(b.contests.contestRating || 0)} 
-                            icon="⚔️"
+                            icon={<Swords size={16} />}
                             color="purple"
                         />
                         <BattleRow 
                             label="Max Streak" 
                             user1Value={Math.max(a.calendar.streak || 0, calculateStreak(a.calendar.submissionCalendar))} 
                             user2Value={Math.max(b.calendar.streak || 0, calculateStreak(b.calendar.submissionCalendar))} 
-                            icon="🔥"
+                            icon={<Flame size={16} />}
                             color="orange"
                         />
                     </div>
@@ -193,21 +212,21 @@ export default async function ComparePage({ params }: Props) {
                             label="Reputation" 
                             user1Value={a.community.reputation} 
                             user2Value={b.community.reputation} 
-                            icon="🤝"
+                            icon={<Handshake size={16} />}
                             color="blue"
                         />
                         <BattleRow 
                             label="Discuss Posts" 
                             user1Value={a.community.postCount} 
                             user2Value={b.community.postCount} 
-                            icon="💬"
+                            icon={<MessageSquare size={16} />}
                             color="yellow"
                         />
                         <BattleRow 
                             label="Solutions Shared" 
                             user1Value={a.community.solutionCount} 
                             user2Value={b.community.solutionCount} 
-                            icon="💡"
+                            icon={<Lightbulb size={16} />}
                             color="green"
                         />
                     </div>
@@ -255,7 +274,9 @@ export default async function ComparePage({ params }: Props) {
         <AnimateIn direction="up" delay={0.8}>
             <div className="bg-[#202f36] border-2 border-b-4 border-[#37464f] rounded-[32px] p-8 md:p-12">
                 <h3 className="text-2xl font-black mb-8 text-center flex items-center justify-center gap-3">
-                    <span className="bg-[#ffc800] p-2.5 rounded-2xl text-white text-xl">🏅</span>
+                    <span className="bg-[#ffc800] p-2.5 rounded-2xl text-white">
+                        <Medal size={24} />
+                    </span>
                     Badge Collection
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-8 items-center">

@@ -4,7 +4,7 @@ interface BattleRowProps {
   label: string;
   user1Value?: number;
   user2Value?: number;
-  icon?: string;
+  icon?: React.ReactNode;
   color?: "green" | "orange" | "purple" | "blue" | "red" | "yellow";
 }
 

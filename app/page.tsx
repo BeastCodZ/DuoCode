@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getDailyQuestion, LeetCodeDaily } from "@/lib/leetcode";
 import AnimateIn from "@/components/AnimateIn";
+import { Target, User, Swords } from "lucide-react";
 
 interface BattleHistory {
   u1: string;
@@ -152,8 +153,8 @@ export default function HomePage() {
         {daily && (
             <AnimateIn direction="up" delay={0.3}>
                 <div className="bg-[#202f36] border-2 border-b-8 border-[#1cb0f6] rounded-[32px] p-6 md:p-8 mb-10 relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 p-6 text-5xl opacity-10 group-hover:scale-110 transition-transform">
-                        🎯
+                    <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform text-[#1cb0f6]">
+                        <Target size={64} />
                     </div>
                     <div className="relative z-10">
                         <h3 className="text-[#1cb0f6] font-black uppercase text-xs tracking-[0.3em] mb-3">
@@ -196,7 +197,9 @@ export default function HomePage() {
           <AnimateIn direction="left" delay={0.4} className="h-full">
               <div className="bg-[#202f36] rounded-[32px] p-6 border-2 border-b-8 border-[#37464f] transition-transform hover:-translate-y-1 h-full flex flex-col">
                 <h2 className="text-2xl font-black mb-6 flex items-center gap-3">
-                  <span className="bg-[#1cb0f6] p-2 rounded-2xl text-white text-lg">👤</span>
+                  <span className="bg-[#1cb0f6] p-2 rounded-2xl text-white">
+                    <User size={24} />
+                  </span>
                   View Profile
                 </h2>
                 <div className="space-y-3 mt-auto">
@@ -222,7 +225,9 @@ export default function HomePage() {
           <AnimateIn direction="right" delay={0.5} className="h-full">
               <div className="bg-[#202f36] rounded-[32px] p-6 border-2 border-b-8 border-[#37464f] transition-transform hover:-translate-y-1 h-full flex flex-col">
                 <h2 className="text-2xl font-black mb-6 flex items-center gap-3">
-                  <span className="bg-[#ce82ff] p-2 rounded-2xl text-white text-lg">⚔️</span>
+                  <span className="bg-[#ce82ff] p-2 rounded-2xl text-white">
+                    <Swords size={24} />
+                  </span>
                   Compare
                 </h2>
                 <div className="space-y-3 mt-auto">

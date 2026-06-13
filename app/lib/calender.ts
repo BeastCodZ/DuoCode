@@ -13,9 +13,22 @@ export function getTodaySolved(
     const todayDate = new Date();
     todayDate.setHours(0, 0, 0, 0);
 
-    const today = Math.floor(todayDate.getTime() / 1000);
+    const timestamp = Math.floor(todayDate.getTime() / 1000);
 
-    return calendar[today] || 0;
+    let count = calendar[timestamp] || calendar[timestamp.toString()] || 0;
+      
+    if (!count) {
+        const keys = Object.keys(calendar);
+        const fuzzyMatch = keys.find(k => {
+            const kt = parseInt(k);
+            return Math.abs(kt - timestamp) < 43200; 
+        });
+        if (fuzzyMatch) {
+            count = calendar[fuzzyMatch];
+        }
+    }
+
+    return count;
   } catch {
     return 0;
   }

@@ -6,6 +6,27 @@ import BadgeIcon from "@/components/BadgeIcon";
 import Heatmap from "@/components/Heatmap";
 import { getLastNDays, calculateStreak } from "@/lib/calender";
 import AnimateIn from "@/components/AnimateIn";
+import { 
+  Flame, 
+  Target, 
+  Swords, 
+  Handshake, 
+  BarChart3, 
+  TrendingUp, 
+  Brain, 
+  Calendar, 
+  Medal, 
+  CheckCircle2,
+  MapPin,
+  Github,
+  Twitter,
+  Linkedin,
+  Gem,
+  Trophy,
+  Award,
+  ArrowUp,
+  ArrowDown
+} from "lucide-react";
 
 export default async function UserProfilePage({
   params,
@@ -25,11 +46,11 @@ export default async function UserProfilePage({
   // Logic for League (Duolingo style)
   const solvedCount = data.solved.solvedProblem;
   const leagues = {
-    diamond: { name: "Diamond", colorClasses: "bg-blue-500/20 text-blue-500 border-blue-500/30", icon: "💎" },
-    ruby: { name: "Ruby", colorClasses: "bg-red-500/20 text-red-500 border-red-500/30", icon: "🧣" },
-    emerald: { name: "Emerald", colorClasses: "bg-green-500/20 text-green-500 border-green-500/30", icon: "🌲" },
-    gold: { name: "Gold", colorClasses: "bg-yellow-500/20 text-yellow-500 border-yellow-500/30", icon: "🏆" },
-    bronze: { name: "Bronze", colorClasses: "bg-orange-500/20 text-orange-500 border-orange-500/30", icon: "🥉" },
+    diamond: { name: "Diamond", colorClasses: "bg-blue-500/20 text-blue-500 border-blue-500/30", icon: <Gem size={24} /> },
+    ruby: { name: "Ruby", colorClasses: "bg-red-500/20 text-red-500 border-red-500/30", icon: <Gem size={24} /> },
+    emerald: { name: "Emerald", colorClasses: "bg-green-500/20 text-green-500 border-green-500/30", icon: <Gem size={24} /> },
+    gold: { name: "Gold", colorClasses: "bg-yellow-500/20 text-yellow-500 border-yellow-500/30", icon: <Trophy size={24} /> },
+    bronze: { name: "Bronze", colorClasses: "bg-orange-500/20 text-orange-500 border-orange-500/30", icon: <Award size={24} /> },
   };
 
   const league = 
@@ -98,8 +119,8 @@ export default async function UserProfilePage({
                                 {league.name} League
                             </span>
                             {data.profile.country && (
-                                <span className="bg-zinc-800 text-zinc-400 px-5 py-2 rounded-2xl border-2 border-zinc-700 font-black text-sm uppercase tracking-wider">
-                                    📍 {data.profile.country}
+                                <span className="bg-zinc-800 text-zinc-400 px-5 py-2 rounded-2xl border-2 border-zinc-700 font-black text-sm uppercase tracking-wider flex items-center gap-2">
+                                    <MapPin size={14} /> {data.profile.country}
                                 </span>
                             )}
                         </div>
@@ -113,18 +134,18 @@ export default async function UserProfilePage({
                         {/* Social Links */}
                         <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-6">
                             {data.profile.gitHub && (
-                                <a href={data.profile.gitHub} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-white transition-colors text-xl">
-                                    󰊤
+                                <a href={data.profile.gitHub} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-white transition-colors">
+                                    <Github size={20} />
                                 </a>
                             )}
                             {data.profile.twitter && (
-                                <a href={data.profile.twitter} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-white transition-colors text-xl">
-                                    󰭹
+                                <a href={data.profile.twitter} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-white transition-colors">
+                                    <Twitter size={20} />
                                 </a>
                             )}
                             {data.profile.linkedIn && (
-                                <a href={data.profile.linkedIn} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-white transition-colors text-xl">
-                                    󰔄
+                                <a href={data.profile.linkedIn} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-white transition-colors">
+                                    <Linkedin size={20} />
                                 </a>
                             )}
                         </div>
@@ -139,28 +160,28 @@ export default async function UserProfilePage({
             <StatCard 
                 label="Current Streak" 
                 value={`${currentStreak} Days`} 
-                icon="🔥" 
+                icon={<Flame size={32} />} 
                 color="orange" 
                 description="Keep it up!"
             />
             <StatCard 
                 label="Acceptance Rate" 
                 value={`${acceptanceRate}%`} 
-                icon="🎯" 
+                icon={<Target size={32} />} 
                 color="green" 
                 description="Overall accuracy"
             />
             <StatCard 
                 label="Contest Rating" 
                 value={data.contests.contestRating ? Math.round(data.contests.contestRating) : "N/A"} 
-                icon="⚔️" 
+                icon={<Swords size={32} />} 
                 color="purple" 
                 description={data.contests.contestTopPercentage ? `Top ${data.contests.contestTopPercentage}%` : "Global competition"}
             />
             <StatCard 
                 label="Community" 
                 value={data.community.reputation} 
-                icon="🤝" 
+                icon={<Handshake size={32} />} 
                 color="blue" 
                 description={`${data.community.solutionCount} Solutions`}
             />
@@ -174,7 +195,9 @@ export default async function UserProfilePage({
                 <AnimateIn direction="left" delay={0.3}>
                     <div className="bg-[#202f36] border-2 border-b-4 border-[#37464f] rounded-[32px] p-6 md:p-8">
                         <h3 className="text-2xl font-black mb-8 flex items-center gap-3">
-                            <span className="bg-[#58cc02] p-2.5 rounded-2xl text-white text-xl">📊</span>
+                            <span className="bg-[#58cc02] p-2.5 rounded-2xl text-white">
+                                <BarChart3 size={24} />
+                            </span>
                             Difficulty Breakdown
                         </h3>
                         <div className="space-y-6">
@@ -205,7 +228,9 @@ export default async function UserProfilePage({
                     <AnimateIn direction="left" delay={0.4}>
                         <div className="bg-[#202f36] border-2 border-b-4 border-[#37464f] rounded-[32px] p-6 md:p-8">
                             <h3 className="text-2xl font-black mb-8 flex items-center gap-3">
-                                <span className="bg-[#ce82ff] p-2.5 rounded-2xl text-white text-xl">📈</span>
+                                <span className="bg-[#ce82ff] p-2.5 rounded-2xl text-white">
+                                    <TrendingUp size={24} />
+                                </span>
                                 Recent Contests
                             </h3>
                             <div className="space-y-4">
@@ -219,8 +244,8 @@ export default async function UserProfilePage({
                                         </div>
                                         <div className="text-right">
                                             <div className="text-xl font-black text-[#ce82ff]">{Math.round(contest.rating)}</div>
-                                            <div className={`text-[10px] font-black uppercase tracking-widest ${contest.trendDirection === 'UP' ? 'text-[#58cc02]' : 'text-[#ff4b4b]'}`}>
-                                                {contest.trendDirection === 'UP' ? '󰄿' : '󰄼'} Rating
+                                            <div className={`text-[10px] font-black uppercase tracking-widest flex items-center justify-end gap-1 ${contest.trendDirection === 'UP' ? 'text-[#58cc02]' : 'text-[#ff4b4b]'}`}>
+                                                {contest.trendDirection === 'UP' ? <ArrowUp size={10} /> : <ArrowDown size={10} />} Rating
                                             </div>
                                         </div>
                                     </div>
@@ -235,9 +260,12 @@ export default async function UserProfilePage({
                     <AnimateIn direction="left" delay={0.5}>
                         <div className="bg-[#202f36] border-2 border-b-4 border-[#37464f] rounded-[32px] p-6 md:p-8">
                             <h3 className="text-2xl font-black mb-8 flex items-center gap-3">
-                                <span className="bg-[#1cb0f6] p-2.5 rounded-2xl text-white text-xl">🧠</span>
+                                <span className="bg-[#1cb0f6] p-2.5 rounded-2xl text-white">
+                                    <Brain size={24} />
+                                </span>
                                 Top Skills
                             </h3>
+
                             <div className="flex flex-wrap gap-3">
                                 {allSkills.slice(0, 15).map((skill) => (
                                     <div key={skill.tagSlug} className="bg-[#131f24] border-2 border-b-4 border-[#37464f] px-4 py-2.5 rounded-2xl flex items-center gap-3 group hover:-translate-y-1 transition-transform cursor-default">
@@ -257,7 +285,9 @@ export default async function UserProfilePage({
                     <div className="bg-[#202f36] border-2 border-b-4 border-[#37464f] rounded-[32px] p-6 md:p-8">
                         <div className="flex justify-between items-center mb-8">
                             <h3 className="text-2xl font-black flex items-center gap-3">
-                                <span className="bg-[#58cc02] p-2.5 rounded-2xl text-white text-xl">📅</span>
+                                <span className="bg-[#58cc02] p-2.5 rounded-2xl text-white">
+                                    <Calendar size={24} />
+                                </span>
                                 Activity Heatmap
                             </h3>
                             <span className="text-zinc-500 font-bold text-sm">Last 35 days</span>
@@ -277,7 +307,9 @@ export default async function UserProfilePage({
                 <AnimateIn direction="right" delay={0.3}>
                     <div className="bg-[#202f36] border-2 border-b-4 border-[#37464f] rounded-[32px] p-6 md:p-8">
                         <h3 className="text-2xl font-black mb-8 flex items-center gap-3">
-                            <span className="bg-[#ffc800] p-2.5 rounded-2xl text-white text-xl">🏅</span>
+                            <span className="bg-[#ffc800] p-2.5 rounded-2xl text-white">
+                                <Medal size={24} />
+                            </span>
                             Badges ({data.badges.badgesCount})
                         </h3>
                         <div className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -298,15 +330,17 @@ export default async function UserProfilePage({
                     <AnimateIn direction="right" delay={0.4}>
                         <div className="bg-[#202f36] border-2 border-b-4 border-[#37464f] rounded-[32px] p-6 md:p-8">
                             <h3 className="text-2xl font-black mb-8 flex items-center gap-3">
-                                <span className="bg-[#58cc02] p-2.5 rounded-2xl text-white text-xl">🎯</span>
+                                <span className="bg-[#58cc02] p-2.5 rounded-2xl text-white">
+                                    <Target size={24} />
+                                </span>
                                 Recent Successes
                             </h3>
                             <div className="space-y-4">
                                 {submissions.map((sub, i) => (
                                     <div key={i} className="bg-[#131f24] p-4 rounded-2xl border-2 border-b-4 border-[#37464f] flex items-center justify-between group hover:border-[#58cc02] transition-colors">
                                         <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-xl bg-[#58cc02]/20 flex items-center justify-center text-lg">
-                                                ✅
+                                            <div className="w-10 h-10 rounded-xl bg-[#58cc02]/20 flex items-center justify-center">
+                                                <CheckCircle2 size={20} className="text-[#58cc02]" />
                                             </div>
                                             <div>
                                                 <h4 className="font-black text-white text-base leading-tight group-hover:text-[#58cc02] transition-colors line-clamp-1">

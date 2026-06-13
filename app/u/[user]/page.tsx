@@ -4,7 +4,7 @@ import StatCard from "@/components/StatCard";
 import ProgressBar from "@/components/ProgressBar";
 import BadgeIcon from "@/components/BadgeIcon";
 import Heatmap from "@/components/Heatmap";
-import { getLastNDays, calculateStreak } from "@/lib/calender";
+import { getLastNDays, calculateStreak, getTodaySolved } from "@/lib/calender";
 import AnimateIn from "@/components/AnimateIn";
 import { 
   Flame, 
@@ -23,7 +23,8 @@ import {
   Award,
   ArrowUp,
   ArrowDown,
-  X
+  X,
+  Check
 } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 
@@ -40,6 +41,7 @@ export default async function UserProfilePage({
   const submissions = data.latestAccepted?.submission || [];
   
   const heatmapValues = getLastNDays(data.calendar.submissionCalendar, 35);
+  const solvedToday = getTodaySolved(data.calendar.submissionCalendar);
   const currentStreak = Math.max(data.calendar.streak || 0, calculateStreak(data.calendar.submissionCalendar));
   
   // Logic for League (Duolingo style)
@@ -155,13 +157,20 @@ export default async function UserProfilePage({
 
         {/* STATS GRID */}
         <AnimateIn direction="scale" delay={0.2}>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             <StatCard 
                 label="Current Streak" 
                 value={`${currentStreak} Days`} 
                 icon={<Flame size={32} />} 
                 color="orange" 
                 description="Keep it up!"
+            />
+            <StatCard 
+                label="Solved Today" 
+                value={solvedToday} 
+                icon={<Check size={32} />} 
+                color="pink" 
+                description="Problem solved today"
             />
             <StatCard 
                 label="Acceptance Rate" 

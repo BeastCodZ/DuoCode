@@ -46,6 +46,11 @@ const StatCard: React.FC<StatCardProps> = ({
       text: "text-[#ff4b4b]",
       border: "border-[#e54343]",
     },
+    pink: {
+      bg: "bg-[#ff69b4]",
+      text: "text-[#ff69b4]",
+      border: "border-[#e55fa0]"
+    }
   };
 
   const selectedColor = colorMap[color] || colorMap.green;

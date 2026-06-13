@@ -62,7 +62,7 @@ export default async function ComparePage({ params }: Props) {
   const winner = aSolved > bSolved ? a.profile.username : b.profile.username;
 
   // Acceptance Rate
-  const getAcceptanceRate = (data: FullUserData) => {
+    const getAcceptanceRate = (data: FullUserData) => {
     const total = data.solved.totalSubmissionNum.find(s => s.difficulty === "All")?.submissions || 1;
     const ac = data.solved.acSubmissionNum.find(s => s.difficulty === "All")?.count || 0;
     return Math.round((ac / total) * 100);
@@ -95,7 +95,23 @@ export default async function ComparePage({ params }: Props) {
   const aLangs = getLangs(a);
   const bLangs = getLangs(b);
   const commonLangs = Object.keys({ ...aLangs, ...bLangs }).sort((x, y) => ((aLangs[y] || 0) + (bLangs[y] || 0)) - ((aLangs[x] || 0) + (bLangs[x] || 0))).slice(0, 5);
-
+  const today = new Date().toDateString();
+    const submissionsa = a.latestAccepted?.submission || [];
+    const submissionsb = b.latestAccepted?.submission || [];
+    const solvedTodaya = new Set(
+    submissionsa
+        .filter(sub =>
+        new Date(sub.timestamp * 1000).toDateString() === today
+        )
+        .map(sub => sub.titleSlug)
+    ).size;
+    const solvedTodayb = new Set(
+    submissionsb
+        .filter(sub =>
+        new Date(sub.timestamp * 1000).toDateString() === today
+        )
+        .map(sub => sub.titleSlug)
+    ).size;
   return (
     <main className="min-h-screen bg-[#131f24] text-white p-4 md:p-8 font-sans overflow-hidden">
       <div className="max-w-4xl mx-auto space-y-12">
@@ -142,8 +158,8 @@ export default async function ComparePage({ params }: Props) {
                     <div className="grid gap-3">
                         <BattleRow 
                             label="Solved Today" 
-                            user1Value={getTodaySolved(a.calendar.submissionCalendar)} 
-                            user2Value={getTodaySolved(b.calendar.submissionCalendar)} 
+                            user1Value={solvedTodaya} 
+                            user2Value={solvedTodayb} 
                             icon={<Calendar size={16} />}
                             color="yellow"
                         />

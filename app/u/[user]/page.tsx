@@ -41,7 +41,15 @@ export default async function UserProfilePage({
   const submissions = data.latestAccepted?.submission || [];
   
   const heatmapValues = getLastNDays(data.calendar.submissionCalendar, 35);
-  const solvedToday = getTodaySolved(data.calendar.submissionCalendar);
+  const today = new Date().toDateString();
+
+const solvedToday = new Set(
+  submissions
+    .filter(sub =>
+      new Date(sub.timestamp * 1000).toDateString() === today
+    )
+    .map(sub => sub.titleSlug)
+).size;
   const currentStreak = Math.max(data.calendar.streak || 0, calculateStreak(data.calendar.submissionCalendar));
   
   // Logic for League (Duolingo style)
@@ -67,7 +75,7 @@ export default async function UserProfilePage({
   const acceptanceRate = ((acSub / totalSub) * 100).toFixed(1);
 
   // Skill stats preparation
-  const easyTotal = 800; // Mock totals for progress bars
+  const easyTotal = 800;
   const mediumTotal = 1600;
   const hardTotal = 700;
 

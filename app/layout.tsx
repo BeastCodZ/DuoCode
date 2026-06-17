@@ -21,8 +21,8 @@ export const metadata: Metadata = {
     siteName: "DuoCode",
     images: [
       {
-        url: "/opengraph.jpg",
-        alt: "DuoCode - Gamified LeetCode Competition",
+        url: "/opengraph.png",
+        alt: "DuoCode | Duolingo for LeetCode",
       },
     ],
   },
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "DuoCode | Duolingo for LeetCode",
     description: "LeetCode. Every developer starts here. Not every developer is seen again. The last person who forgot their streak disappeared under mysterious circumstances. We found his keyboard. Nothing else. Maintain your streak. Ignore the scratching behind the Medium questions. Programa o desaparece. The Owl sends his regards.",
-    images: ["/opengraph.jpg"],
+    images: ["/opengraph.png"],
   },
 };
 

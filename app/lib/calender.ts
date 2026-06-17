@@ -82,41 +82,40 @@ export function getLastNDays(
   }
 }
 
-export function calculateStreak(submissionCalendar?: string): number {
+export function calculateStreak(
+  submissionCalendar?: string
+): number {
   if (!submissionCalendar) return 0;
-  
+
   try {
     const calendar = JSON.parse(submissionCalendar);
-    let streak = 0;
+
+    const daySet = new Set(
+      Object.keys(calendar).map(Number)
+    );
+
     const now = new Date();
-    now.setHours(0, 0, 0, 0);
 
-    for (let i = 0; i < 1000; i++) { // check up to ~3 years
-      const date = new Date(now);
-      date.setDate(now.getDate() - i);
-      const timestamp = Math.floor(date.getTime() / 1000);
-      
-      let count = calendar[timestamp] || calendar[timestamp.toString()] || 0;
-      
-      if (!count) {
-          const keys = Object.keys(calendar);
-          const fuzzyMatch = keys.find(k => {
-              const kt = parseInt(k);
-              return Math.abs(kt - timestamp) < 43200; 
-          });
-          if (fuzzyMatch) count = calendar[fuzzyMatch];
-      }
+    // Today's UTC midnight
+    let day =
+      Date.UTC(
+        now.getUTCFullYear(),
+        now.getUTCMonth(),
+        now.getUTCDate()
+      ) / 1000;
 
-      if (count > 0) {
-          streak++;
-      } else if (i === 0) {
-          // If today is 0, the streak might still be active if yesterday was > 0
-          continue;
-      } else {
-          // Streak broken
-          break;
-      }
+    // If no solve today, allow streak to start from yesterday
+    if (!daySet.has(day)) {
+      day -= 86400;
     }
+
+    let streak = 0;
+
+    while (daySet.has(day)) {
+      streak++;
+      day -= 86400;
+    }
+
     return streak;
   } catch {
     return 0;

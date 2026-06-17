@@ -17,6 +17,7 @@ import {
   Medal 
 } from "lucide-react";
 
+
 type Props = {
   params: Promise<{
     user1: string;
@@ -26,7 +27,7 @@ type Props = {
 
 function MiniProfile({ user, winner }: { user: FullUserData; winner?: boolean }) {
   return (
-    <div className={`flex flex-col items-center gap-4 transition-transform duration-500 ${winner ? 'scale-110' : 'opacity-80'}`}>
+    <div className={`flex flex-col items-center gap-4 transition-transform duration-500 p-4`}>
       <div className="relative">
         <div className={`w-24 h-24 md:w-32 md:h-32 rounded-full border-4 ${winner ? 'border-[#ffc800]' : 'border-zinc-700'} p-1.5 bg-[#131f24] relative shadow-2xl`}>
           <Image
@@ -54,6 +55,19 @@ function MiniProfile({ user, winner }: { user: FullUserData; winner?: boolean })
       </div>
     </div>
   );
+}
+function getSolvedToday(
+  submissions: { timestamp: string; titleSlug: string }[]
+) {
+  const cutoff = Date.now() - 24 * 60 * 60 * 1000;
+
+  return new Set(
+    submissions
+      .filter(
+        (sub) => Number(sub.timestamp) * 1000 >= cutoff
+      )
+      .map((sub) => sub.titleSlug)
+  ).size;
 }
 
 export default async function ComparePage({ params }: Props) {
@@ -99,33 +113,24 @@ export default async function ComparePage({ params }: Props) {
   const aLangs = getLangs(a);
   const bLangs = getLangs(b);
   const commonLangs = Object.keys({ ...aLangs, ...bLangs }).sort((x, y) => ((aLangs[y] || 0) + (bLangs[y] || 0)) - ((aLangs[x] || 0) + (bLangs[x] || 0))).slice(0, 5);
-  const today = new Date().toDateString();
-    const submissionsa = a.latestAccepted?.submission || [];
-    const submissionsb = b.latestAccepted?.submission || [];
-    const solvedTodaya = new Set(
-    submissionsa
-        .filter(sub =>
-        new Date(Number(sub.timestamp) * 1000).toDateString() === today
-        )
-        .map(sub => sub.titleSlug)
-    ).size;
-    const solvedTodayb = new Set(
-    submissionsb
-        .filter(sub =>
-        new Date(Number(sub.timestamp) * 1000).toDateString() === today
-        )
-        .map(sub => sub.titleSlug)
-    ).size;
+
+  
+
+const submissionsa = a.latestAccepted?.submission ?? [];
+const submissionsb = b.latestAccepted?.submission ?? [];
+
+const solvedTodaya = getSolvedToday(submissionsa);
+const solvedTodayb = getSolvedToday(submissionsb);
+
+
   return (
     <main className="min-h-screen bg-[#131f24] text-white p-4 md:p-8 font-sans overflow-hidden">
       <div className="max-w-4xl mx-auto space-y-12">
         
         {/* BATTLE HEADER */}
         <AnimateIn direction="down" delay={0.1}>
-            <div className="text-center space-y-4">
-            <h1 className="text-5xl md:text-7xl font-black tracking-tighter uppercase italic text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-700 leading-none">
-                Battle
-            </h1>
+            <div className="flex flex-col items-center">
+            <Image src="/banner.webp" alt="DuoCode" width={256} height={256} />
             <div className="inline-block bg-[#58cc02] text-white px-6 py-2 rounded-2xl font-black text-xl shadow-[0_4px_0_0_#46a302] transform -rotate-2 hover:rotate-0 transition-transform cursor-default">
                 WINNER: {winner.toUpperCase()}
             </div>
@@ -134,20 +139,14 @@ export default async function ComparePage({ params }: Props) {
 
         {/* VERSUS SECTION */}
         <AnimateIn direction="scale" delay={0.2}>
-            <div className="flex justify-between items-center bg-[#202f36] border-2 border-b-8 border-[#37464f] rounded-[40px] p-8 md:p-12 relative overflow-hidden group">
+            <div className="flex justify-between items-center bg-[#202f36] border-2 border-b-8 border-[#37464f] rounded-[40px] p-4 md:p-6 relative overflow-hidden group ">
                 {/* Decorative Background */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10rem] md:text-[15rem] font-black text-white/5 pointer-events-none select-none italic group-hover:text-white/10 transition-colors">
-                    VS
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[8rem] md:text-[12rem] font-black text-white/5 pointer-events-none select-none italic group-hover:text-white/10 transition-colors">
+                    <Image src="/duocode.webp" alt="DuoCode" width={128} height={128} className="w-32 opacity-60" />
                 </div>
 
                 <MiniProfile user={a} winner={a.profile.username === winner} />
                 
-                <div className="hidden md:flex flex-col items-center z-10">
-                    <div className="w-16 h-16 rounded-full bg-[#131f24] border-4 border-[#37464f] flex items-center justify-center shadow-xl">
-                        <span className="text-2xl font-black text-[#58cc02] italic">VS</span>
-                    </div>
-                </div>
-
                 <MiniProfile user={b} winner={b.profile.username === winner} />
             </div>
         </AnimateIn>
@@ -159,7 +158,7 @@ export default async function ComparePage({ params }: Props) {
                     <h3 className="text-center text-zinc-500 font-black uppercase text-sm tracking-[0.4em] mb-6">
                         Core Performance
                     </h3>
-                    <div className="grid gap-3">
+                    <div className="grid grid-cols-2 gap-3">
                         <BattleRow 
                             label="Solved Today" 
                             user1Value={solvedTodaya} 
@@ -167,6 +166,14 @@ export default async function ComparePage({ params }: Props) {
                             icon={<Calendar size={16} />}
                             color="yellow"
                         />
+                                               <BattleRow
+  label="Current Streak"
+  user1Value={calculateStreak(a.calendar.submissionCalendar)}
+  user2Value={calculateStreak(b.calendar.submissionCalendar)}
+  icon={<Flame size={16} />}
+  color="orange"
+/>
+
                         <BattleRow 
                             label="Total Solved" 
                             user1Value={a.solved.solvedProblem} 
@@ -181,20 +188,6 @@ export default async function ComparePage({ params }: Props) {
                             icon={<Target size={16} />}
                             color="blue"
                         />
-                        <BattleRow 
-                            label="Contest Rating" 
-                            user1Value={Math.round(a.contests.contestRating || 0)} 
-                            user2Value={Math.round(b.contests.contestRating || 0)} 
-                            icon={<Swords size={16} />}
-                            color="purple"
-                        />
-                        <BattleRow 
-                            label="Max Streak" 
-                            user1Value={Math.max(a.calendar.streak || 0, calculateStreak(a.calendar.submissionCalendar))} 
-                            user2Value={Math.max(b.calendar.streak || 0, calculateStreak(b.calendar.submissionCalendar))} 
-                            icon={<Flame size={16} />}
-                            color="orange"
-                        />
                     </div>
                 </div>
             </AnimateIn>
@@ -206,7 +199,7 @@ export default async function ComparePage({ params }: Props) {
                         <h3 className="text-center text-zinc-500 font-black uppercase text-sm tracking-[0.4em] mb-6">
                             Language Mastery
                         </h3>
-                        <div className="grid gap-3">
+                        <div className="grid grid-cols-2 gap-3">
                             {commonLangs.map(lang => (
                                 <BattleRow 
                                     key={lang}
@@ -220,14 +213,26 @@ export default async function ComparePage({ params }: Props) {
                     </div>
                 </AnimateIn>
             )}
-
+{/* DIFFICULTY DRILL-DOWN */}
+            <AnimateIn direction="up" delay={0.7}>
+                <div>
+                    <h3 className="text-center text-zinc-500 font-black uppercase text-sm tracking-[0.4em] mb-6">
+                        Difficulty Balance
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <BattleRow label="Easy" user1Value={a.solved.easySolved} user2Value={b.solved.easySolved} color="green" />
+                        <BattleRow label="Medium" user1Value={a.solved.mediumSolved} user2Value={b.solved.mediumSolved} color="orange" />
+                        <BattleRow label="Hard" user1Value={a.solved.hardSolved} user2Value={b.solved.hardSolved} color="red" />
+                    </div>
+                </div>
+            </AnimateIn>
             {/* COMMUNITY BATTLE */}
             <AnimateIn direction="up" delay={0.5}>
                 <div>
                     <h3 className="text-center text-zinc-500 font-black uppercase text-sm tracking-[0.4em] mb-6">
                         Community Presence
                     </h3>
-                    <div className="grid gap-3">
+                    <div className="grid grid-cols-3 gap-3">
                         <BattleRow 
                             label="Reputation" 
                             user1Value={a.community.reputation} 
@@ -260,7 +265,7 @@ export default async function ComparePage({ params }: Props) {
                         <h3 className="text-center text-zinc-500 font-black uppercase text-sm tracking-[0.4em] mb-6">
                             Top Skill Matchups
                         </h3>
-                        <div className="grid gap-3">
+                        <div className="grid grid-cols-2 gap-3">
                             {commonSkillNames.map(skill => (
                                 <BattleRow 
                                     key={skill}
@@ -275,23 +280,10 @@ export default async function ComparePage({ params }: Props) {
                 </AnimateIn>
             )}
             
-            {/* DIFFICULTY DRILL-DOWN */}
-            <AnimateIn direction="up" delay={0.7}>
-                <div>
-                    <h3 className="text-center text-zinc-500 font-black uppercase text-sm tracking-[0.4em] mb-6">
-                        Difficulty Balance
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <BattleRow label="Easy" user1Value={a.solved.easySolved} user2Value={b.solved.easySolved} color="green" />
-                        <BattleRow label="Medium" user1Value={a.solved.mediumSolved} user2Value={b.solved.mediumSolved} color="orange" />
-                        <BattleRow label="Hard" user1Value={a.solved.hardSolved} user2Value={b.solved.hardSolved} color="red" />
-                    </div>
-                </div>
-            </AnimateIn>
         </div>
 
         {/* BADGE BATTLE */}
-        <AnimateIn direction="up" delay={0.8}>
+        {/* <AnimateIn direction="up" delay={0.8}>
             <div className="bg-[#202f36] border-2 border-b-4 border-[#37464f] rounded-[32px] p-8 md:p-12">
                 <h3 className="text-2xl font-black mb-8 text-center flex items-center justify-center gap-3">
                     <span className="bg-[#ffc800] p-2.5 rounded-2xl text-white">
@@ -299,7 +291,7 @@ export default async function ComparePage({ params }: Props) {
                     </span>
                     Badge Collection
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-8 items-center">
+                <div className="flex flex-row gap-8 items-center">
                     <div>
                         <div className="flex flex-wrap gap-3 justify-center">
                             {a.badges.badges?.slice(0, 8).map((badge) => (
@@ -329,7 +321,7 @@ export default async function ComparePage({ params }: Props) {
                     </div>
                 </div>
             </div>
-        </AnimateIn>
+        </AnimateIn> */}
 
       </div>
     </main>

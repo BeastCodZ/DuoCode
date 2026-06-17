@@ -56,11 +56,9 @@ const BattleRow: React.FC<BattleRowProps> = ({
 
       <div className="flex w-full h-4 bg-[#37464f] rounded-full overflow-hidden relative border-2 border-[#131f24]">
         <div
-          className={`h-full ${selectedColor.fill} transition-all duration-1000 ease-out relative`}
-          style={{ width: `${user1Percentage}%` }}
+          className={`h-full ${selectedColor.fill} transition-all duration-1000 ease-out`}
+          style={{ width: `${user1Percentage}%`, opacity: 0.6 }}
         >
-             {/* The Fire Divider */}
-             <div className="absolute right-[-4px] top-0 h-full w-2 z-20 animate-fire rounded-full shadow-[0_0_15px_rgba(255,150,0,0.8)]" />
         </div>
         
         <div

@@ -221,7 +221,7 @@ export default function HomePage() {
                 <Target size={128} />
               </div>
               <div className="relative z-10">
-                <h3 className="text-[#1cb0f6] font-black uppercase text-xl md:text-lg tracking-[0.2em] mb-3">
+                <h3 className="text-[#1cb0f6] font-black uppercase text-lg md:text-base tracking-[0.2em] mb-3">
                   Today&apos;s Quest
                 </h3>
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">

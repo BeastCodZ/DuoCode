@@ -1,4 +1,4 @@
-const API = "https://alfa-leetcode-api.onrender.com";
+import * as leetcodeService from "./duocode-api/services";
 
 export interface LeetCodeProfile {
   username: string;
@@ -167,21 +167,16 @@ export interface LeetCodeProblemsResponse {
   problemsetQuestionList: LeetCodeProblem[];
 }
 
-
-async function get<T>(url: string): Promise<T> {
-  const res = await fetch(url, {
-    next: { revalidate: 3600 },
-  });
-
-  if (!res.ok) {
-    throw new Error(`Failed: ${url}`);
-  }
-
-  return res.json();
-}
-
 export async function getDailyQuestion(): Promise<LeetCodeDaily> {
-  return get<LeetCodeDaily>(`${API}/daily`);
+  const data = await leetcodeService.getDailyProblem();
+  return {
+    questionFrontendId: String(data.questionFrontendId),
+    questionTitle: data.questionTitle,
+    titleSlug: data.titleSlug,
+    difficulty: data.difficulty,
+    date: data.date,
+    questionLink: data.questionLink,
+  };
 }
 
 export async function getFullUser(
@@ -195,13 +190,53 @@ export async function getFullUser(
     contests,
     badges,
     skillStats,
-    community,
     languages,
   ] = await Promise.all([
-    get<LeetCodeProfile>(`${API}/${username}`),
-    get<LeetCodeSolved>(`${API}/${username}/solved`),
-    get<LeetCodeCalendar>(`${API}/${username}/calendar`),
-    get<{
+    leetcodeService.getUserData(username),
+    leetcodeService.getSolvedProblems(username),
+    leetcodeService.getCalendar(username),
+    leetcodeService.getAcSubmissions(username, 5),
+    leetcodeService.getUserContest(username).catch(() => ({}) as never),
+    leetcodeService.getUserBadges(username).catch(() => ({}) as never),
+    leetcodeService.getSkillStats(username).catch(() => ({}) as never),
+    leetcodeService.getLanguageStats(username).catch(() => ({ matchedUser: { languageProblemCount: [] } } as never)),
+  ]);
+
+  // Map types to match LeetCodeProfile
+  const mappedProfile: LeetCodeProfile = {
+    username: profile.username,
+    name: profile.name || '',
+    avatar: profile.avatar || '',
+    ranking: (profile.ranking ?? 0) as number,
+    reputation: (profile.reputation ?? 0) as number,
+    gitHub: profile.gitHub || '',
+    twitter: profile.twitter || '',
+    linkedIn: (profile as unknown as { linkedIN?: string }).linkedIN || (profile as unknown as { linkedIn?: string }).linkedIn || '', // Handle case difference
+    website: profile.website || [],
+    country: profile.country || '',
+    company: profile.company || '',
+    school: profile.school || '',
+    skillTags: profile.skillTags || [],
+    about: profile.about || '',
+  };
+
+  // Synthesize community data as it's not directly in the service yet
+  const community: LeetCodeCommunity = {
+    reputation: profile.reputation,
+    trustScore: 0,
+    postCount: 0,
+    solutionCount: 0,
+  };
+
+  return {
+    profile: mappedProfile,
+    solved: solved as LeetCodeSolved,
+    calendar: {
+      streak: calendar.streak,
+      totalActiveDays: calendar.totalActiveDays,
+      submissionCalendar: calendar.submissionCalendar,
+    },
+    latestAccepted: latestAccepted as unknown as {
       submission: {
         title: string;
         titleSlug: string;
@@ -209,23 +244,26 @@ export async function getFullUser(
         statusDisplay: string;
         lang: string;
       }[];
-    }>(`${API}/${username}/acSubmission?limit=5`),
-    get<LeetCodeContest>(`${API}/${username}/contest`).catch(() => ({}) as LeetCodeContest),
-    get<LeetCodeBadge>(`${API}/${username}/badges`).catch(() => ({}) as LeetCodeBadge),
-    get<LeetCodeSkillStats>(`${API}/${username}/skillStats`).catch(() => ({}) as LeetCodeSkillStats),
-    get<LeetCodeCommunity>(`${API}/${username}/community`).catch(() => ({ reputation: 0, postCount: 0, solutionCount: 0, trustScore: 0 } as LeetCodeCommunity)),
-    get<LeetCodeLanguageStats>(`${API}/${username}/languageStats`).catch(() => ({ matchedUser: { languageProblemCount: [] } } as LeetCodeLanguageStats)),
-  ]);
-
-  return {
-    profile,
-    solved,
-    calendar,
-    latestAccepted,
-    contests,
-    badges,
-    skillStats,
+    },
+    contests: contests as unknown as LeetCodeContest,
+    badges: {
+      badgesCount: (badges as unknown as { badgesCount: number }).badgesCount || 0,
+      badges: (badges as unknown as { badges: unknown[] }).badges || [],
+      upcomingBadge: (badges as unknown as { upcomingBadges: unknown[] }).upcomingBadges?.[0] || null,
+    } as unknown as LeetCodeBadge,
+    skillStats: {
+      tagProblemCounts: {
+        fundamental: (skillStats as unknown as { fundamental: unknown[] }).fundamental || [],
+        intermediate: (skillStats as unknown as { intermediate: unknown[] }).intermediate || [],
+        advanced: (skillStats as unknown as { advanced: unknown[] }).advanced || [],
+      }
+    } as unknown as LeetCodeSkillStats,
     community,
-    languages,
+    languages: {
+      matchedUser: {
+        languageProblemCount: (languages as unknown as { languageProblemCount: unknown[] }).languageProblemCount || []
+      }
+    } as unknown as LeetCodeLanguageStats,
   };
 }
+

@@ -24,8 +24,9 @@ import {
   ArrowUp,
   ArrowDown,
   X,
-  Check,
+  Check,  
 } from "lucide-react";
+import Link from "next/link"
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import Image from "next/image";
 
@@ -53,7 +54,6 @@ export default async function UserProfilePage({
       .map((sub) => sub.titleSlug),
   ).size;
   const currentStreak = Math.max(
-    data.calendar.streak || 0,
     calculateStreak(data.calendar.submissionCalendar),
   );
 
@@ -126,9 +126,16 @@ export default async function UserProfilePage({
       .reverse() || [];
 
   return (
-    <main className="min-h-screen bg-[#131f24] text-white p-4 md:p-8 font-sans overflow-hidden">
-      <div className="max-w-5xl mx-auto space-y-8">
+    <main className="min-h-screen bg-[#131f24] text-white p-2 md:p-4 overflow-hidden">
+      <div className="max-w-5xl mx-auto space-y-4">
         {/* HEADER SECTION */}
+        <AnimateIn direction="down" delay={0.1}>
+                    <div className="flex flex-col items-center">
+                    <Link href="/">
+                    <Image src="/banner.webp" alt="DuoCode Banner" width={128} height={128} className="w-auto h-auto" />
+                    </Link>
+                    </div>
+                </AnimateIn>
         <AnimateIn direction="down" delay={0.1}>
           <div className="bg-[#202f36] border-2 border-b-8 border-[#37464f] rounded-[40px] p-8 md:p-12 relative overflow-hidden group">
             <div
@@ -214,6 +221,15 @@ export default async function UserProfilePage({
                     </a>
                   )}
                 </div>
+                <div className="flex flex-row flex-wrap gap-4">
+                  {data.badges.badges?.slice(0, 6).map((badge) => (
+                    <BadgeIcon
+                      key={badge.id}
+                      name={badge.displayName}
+                      icon={badge.icon}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -227,7 +243,7 @@ export default async function UserProfilePage({
               value={`${currentStreak} Days`}
               icon={<Flame size={32} />}
               color="orange"
-              description="Keep it up!"
+              description={currentStreak > 1 ? "Keep it up!" : "Let's get the party started!"}
             />
             <StatCard
               label="Solved Today"
@@ -264,6 +280,13 @@ export default async function UserProfilePage({
               icon={<Handshake size={32} />}
               color="blue"
               description={`${data.community.solutionCount} Solutions`}
+            />
+            <StatCard
+              label="Badges"
+              value={data.badges.badgesCount}
+              icon={<Medal size={32} />}
+              color="orange"
+              description={`Badges earned`}
             />
           </div>
         </AnimateIn>
@@ -405,31 +428,6 @@ export default async function UserProfilePage({
 
           {/* RIGHT COLUMN */}
           <div className="space-y-8">
-            {/* BADGES */}
-            <AnimateIn direction="right" delay={0.3}>
-              <div className="bg-[#202f36] border-2 border-b-4 border-[#37464f] rounded-4xl p-6 md:p-8">
-                <h3 className="text-2xl font-black mb-8 flex items-center gap-3">
-                  <span className="bg-[#ffc800] p-2.5 rounded-2xl text-white">
-                    <Medal size={24} />
-                  </span>
-                  Badges ({data.badges.badgesCount})
-                </h3>
-                <div className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                  {data.badges.badges?.slice(0, 12).map((badge) => (
-                    <BadgeIcon
-                      key={badge.id}
-                      name={badge.displayName}
-                      icon={badge.icon}
-                    />
-                  ))}
-                </div>
-                {data.badges.badgesCount > 12 && (
-                  <p className="mt-6 text-center text-zinc-500 font-bold text-sm">
-                    + {data.badges.badgesCount - 12} more
-                  </p>
-                )}
-              </div>
-            </AnimateIn>
 
             {/* RECENT ACTIVITY */}
             {submissions.length > 0 && (
@@ -439,7 +437,7 @@ export default async function UserProfilePage({
                     <span className="bg-[#58cc02] p-2.5 rounded-2xl text-white">
                       <Target size={24} />
                     </span>
-                    Recent Successes
+                    Recent Solved
                   </h3>
                   <div className="space-y-4">
                     {submissions.map((sub, i) => (

@@ -88,28 +88,29 @@ export default function HomePage() {
       <div className="max-w-3xl w-full">
         <AnimateIn direction="down" delay={0.1}>
           <div className="text-center mb-12">
-            <div className="inline-block bg-[#202f36] p-4 rounded-2xl border-2 border-[#37464f]">
-              <div className="relative inline-block mb-8">
-                <Image
-                  src="/duocode.webp"
-                  alt="DuoCode"
-                  width={200}
-                  height={200}
-                  className="w-48 h-auto"
-                />
-                <Image
-                  src="/banner.webp"
-                  alt="DuoCode Banner"
-                  width={256}
-                  height={256}
-                  className="absolute left-0 -bottom-1/2 w-64 h-auto"
-                />
-              </div>
+            <div className="inline-block rounded-2xl border-2 border-[#37464f] bg-[#202f36] p-6">
+  <div className="flex flex-col items-center">
+    <Image
+      src="/duocode.webp"
+      alt="DuoCode"
+      width={192}
+      height={192}
+      className="w-48 h-auto"
+    />
 
-              <h2 className="text-lg font-bold text-zinc-300">
-                Your rival already solved today&apos;s problem.
-              </h2>
-            </div>
+    <Image
+      src="/banner.webp"
+      alt="DuoCode Banner"
+      width={128}
+      height={128}
+      className="-mt-5 w-48 h-auto"
+    />
+
+    <h2 className="-mt-6 text-lg font-bold text-zinc-300">
+      Your rival already solved today&apos;s problem.
+    </h2>
+  </div>
+</div>
           </div>
         </AnimateIn>
 

@@ -102,7 +102,7 @@ export default function HomePage() {
                   alt="DuoCode Banner"
                   width={256}
                   height={256}
-                  className="absolute left-0 -bottom-3/2 w-auto h-auto"
+                  className="absolute left-0 -bottom-1/2 w-64 h-auto"
                 />
               </div>
 

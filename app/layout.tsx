@@ -9,7 +9,7 @@ const nunito = Nunito({
 
 export const metadata: Metadata = {
   title: "DuoCode | Duolingo for LeetCode",
-  metadataBase: new URL("https://duocode.vercel.app"),
+  metadataBase: new URL("https://duocodz.vercel.app"),
   description: "LeetCode. Every developer starts here. Not every developer is seen again. The last person who forgot their streak disappeared under mysterious circumstances. We found his keyboard. Nothing else. Maintain your streak. Ignore the scratching behind the Medium questions. Programa o desaparece. The Owl sends his regards.",
   keywords: ["LeetCode", "coding", "gamified", "competition", "stats", "friends", "DuoCode", "BeastCodZ"],
   authors: [{ name: "BeastCodZ" }],
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     title: "DuoCode | Duolingo for LeetCode",
     description: "LeetCode. Every developer starts here. Not every developer is seen again. The last person who forgot their streak disappeared under mysterious circumstances. We found his keyboard. Nothing else. Maintain your streak. Ignore the scratching behind the Medium questions. Programa o desaparece. The Owl sends his regards.",
     type: "website",
-    url: "https://duocode.vercel.app",
+    url: "https://duocodz.vercel.app",
     siteName: "DuoCode",
     images: [
       {

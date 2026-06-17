@@ -221,12 +221,12 @@ export default function HomePage() {
                 <Target size={128} />
               </div>
               <div className="relative z-10">
-                <h3 className="text-[#1cb0f6] font-black uppercase text-xs tracking-[0.3em] mb-3">
+                <h3 className="text-[#1cb0f6] font-black uppercase text-2xl tracking-[0.2em] mb-3">
                   Today&apos;s Quest
                 </h3>
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
                   <div>
-                    <h2 className="text-xs md:text-2xl font-black text-white group-hover:text-[#1cb0f6] transition-colors">
+                    <h2 className="text-xl md:text-2xl font-black text-white group-hover:text-[#1cb0f6] transition-colors">
                       {daily.questionTitle}
                     </h2>
                     <div className="flex gap-2 mt-2">

@@ -12,7 +12,8 @@ const nextConfig: NextConfig = {
         hostname: 'leetcode.com',
       },
     ],
-  }
+  },
+  allowedDevOrigins: ['192.168.18.24'],
 };
 
 export default nextConfig;

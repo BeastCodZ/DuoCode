@@ -126,7 +126,7 @@ export default async function UserProfilePage({
       .reverse() || [];
 
   return (
-    <main className="min-h-screen bg-[#131f24] text-white p-2 md:p-4 overflow-hidden">
+    <main className="min-h-screen bg-[#131f24] text-white p-4 overflow-hidden">
       <div className="max-w-5xl mx-auto space-y-4">
         {/* HEADER SECTION */}
         <AnimateIn direction="down" delay={0.1}>

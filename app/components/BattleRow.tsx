@@ -57,23 +57,29 @@ const BattleRow: React.FC<BattleRowProps> = ({
       <div className="flex w-full h-4 bg-[#37464f] rounded-full overflow-hidden relative border-2 border-[#131f24]">
         <div
           className={`h-full ${selectedColor.fill} transition-all duration-1000 ease-out`}
-          style={{ width: `${user1Percentage}%`, opacity: 0.6 }}
+          style={{ width: `${user1Percentage}%`, opacity: (v2 > v1) ? 0.6 : 1}}
         >
         </div>
         
         <div
           className={`h-full bg-zinc-700 transition-all duration-1000 ease-out`}
-          style={{ width: `${user2Percentage}%` }}
+          style={{ width: `${user2Percentage}%`}}
         />
         
         {/* If user 2 is winning, we show the fire on their edge of the common boundary */}
-        {v2 > v1 && (
-            <div 
-                className={`absolute right-0 top-0 h-full ${selectedColor.fill} transition-all duration-1000 ease-out`}
-                style={{ width: `${user2Percentage}%` }}
-            >
-                <div className="absolute left-[-4px] top-0 h-full w-2 z-20 animate-fire rounded-full shadow-[0_0_15px_rgba(255,150,0,0.8)]" />
-            </div>
+        {/* Render a semi-transparent/opaque filled area for user2 (on top) */}
+        {v2 >= 0 && (
+          <div
+            className={`absolute right-0 top-0 h-full ${selectedColor.fill} transition-all duration-1000 ease-out`}
+            style={{ width: `${user2Percentage}%`, opacity: v1 > v2 ? 0.6 : 1 }}
+          />
+        )}
+
+        {v1 !== v2 && (
+          <div
+            className="absolute top-0 h-full w-2 z-20 animate-fire rounded-full shadow-[0_0_15px_rgba(255,150,0,0.8)]"
+            style={{ left: `calc(${user1Percentage}% - 2px)`, background: undefined }}
+          />
         )}
       </div>
     </div>

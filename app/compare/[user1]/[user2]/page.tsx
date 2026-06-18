@@ -31,13 +31,13 @@ function MiniProfile({
 }) {
   return (
     <Link href={`/u/${user.profile.username}`}>
-    <div
-      className={`flex flex-col rounded-2xl items-center gap-4 transition-transform duration-500 p-4`}
-    >
-      <div className="relative">
-        <div
-          className={`w-24 h-24 md:w-32 md:h-32 rounded-full border-4 ${winner ? "border-[#ffc800]" : "border-zinc-700"} p-1.5 bg-[#131f24] relative shadow-2xl`}
-        >
+      <div
+        className={`flex flex-col rounded-2xl items-center gap-4 transition-transform duration-500 p-4`}
+      >
+        <div className="relative">
+          <div
+            className={`w-24 h-24 md:w-32 md:h-32 rounded-full border-4 ${winner ? "border-[#ffc800]" : "border-zinc-700"} p-1.5 bg-[#131f24] relative shadow-2xl`}
+          >
             <Image
               src={user.profile.avatar}
               alt={user.profile.username}
@@ -46,37 +46,36 @@ function MiniProfile({
               priority
               className="w-full h-full rounded-full object-cover"
             />
-          
-        </div>
-        {winner && (
-          <div className="absolute -top-5 -right-5 text-[#ffc800] animate-bounce">
-            <Crown size={40} fill="currentColor" />
           </div>
-        )}
+          {winner && (
+            <div className="absolute -top-5 -right-5 text-[#ffc800] animate-bounce">
+              <Crown size={40} fill="currentColor" />
+            </div>
+          )}
+        </div>
+        <div className="text-center">
+          <h2
+            className={`text-xl md:text-2xl font-black ${winner ? "text-[#ffc800]" : "text-white"}`}
+          >
+            {user.profile.username}
+          </h2>
+          <p className="text-zinc-500 font-bold text-xs uppercase tracking-widest mt-1.5 bg-zinc-800/50 px-2 py-0.5 rounded-md inline-block">
+            Rank #{user.profile.ranking.toLocaleString()}
+          </p>
+        </div>
       </div>
-      <div className="text-center">
-        <h2
-          className={`text-xl md:text-2xl font-black ${winner ? "text-[#ffc800]" : "text-white"}`}
-        >
-          {user.profile.username}
-        </h2>
-        <p className="text-zinc-500 font-bold text-xs uppercase tracking-widest mt-1.5 bg-zinc-800/50 px-2 py-0.5 rounded-md inline-block">
-          Rank #{user.profile.ranking.toLocaleString()}
-        </p>
-      </div>
-      
-    </div>
     </Link>
   );
 }
 function getSolvedToday(
   submissions: { timestamp: string; titleSlug: string }[],
 ) {
-  const cutoff = Date.now() - 24 * 60 * 60 * 1000;
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
 
   return new Set(
     submissions
-      .filter((sub) => Number(sub.timestamp) * 1000 >= cutoff)
+      .filter((sub) => Number(sub.timestamp) * 1000 >= startOfToday.getTime())
       .map((sub) => sub.titleSlug),
   ).size;
 }

@@ -54,7 +54,7 @@ export default function BackButton() {
       "
       aria-label="Go back"
     >
-      <BiArrowBack size={20}/>
+      <BiArrowBack size={20} className="w-5 h-5 md:w-6 md:h-6"/>
       <span className="hidden sm:inline">Back</span>
     </button>
   );

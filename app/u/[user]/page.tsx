@@ -42,10 +42,9 @@ export default async function UserProfilePage({
   const { user } = await params;
   const data = await getFullUser(user);
 
-  const submissions = data.latestAccepted?.submission || [];
+  const submissions = data?.latestAccepted?.submission || [];
 
-  const heatmapValues = getLastNDays(data.calendar.submissionCalendar, 35);
-  const today = new Date().toDateString();
+  const heatmapValues = getLastNDays(data?.calendar.submissionCalendar, 35);
 
   function getSolvedToday(
     submissions: { timestamp: string; titleSlug: string }[],
@@ -72,13 +71,13 @@ export default async function UserProfilePage({
 
     return solved.size;
   }
-  const solvedToday = getSolvedToday(data.latestAccepted?.submission ?? []);
+  const solvedToday = getSolvedToday(data?.latestAccepted?.submission ?? []);
   const currentStreak = Math.max(
-    calculateStreak(data.calendar.submissionCalendar),
+    calculateStreak(data?.calendar.submissionCalendar),
   );
 
   // Logic for League (Duolingo style)
-  const solvedCount = data.solved.solvedProblem;
+  const solvedCount = data?.solved.solvedProblem;
   const leagues = {
     diamond: {
       name: "Diamond",
@@ -108,22 +107,24 @@ export default async function UserProfilePage({
   };
 
   const league =
-    solvedCount > 1000
-      ? leagues.diamond
-      : solvedCount > 500
-        ? leagues.ruby
-        : solvedCount > 250
-          ? leagues.emerald
-          : solvedCount > 100
-            ? leagues.gold
-            : leagues.bronze;
+    solvedCount !== undefined
+      ? solvedCount > 1000
+        ? leagues.diamond
+        : solvedCount > 500
+          ? leagues.ruby
+          : solvedCount > 250
+            ? leagues.emerald
+            : solvedCount > 100
+              ? leagues.gold
+              : leagues.bronze
+      : leagues.bronze;
 
   // Acceptance Rate calculation
   const totalSub =
-    data.solved.totalSubmissionNum.find((s) => s.difficulty === "All")
+    data?.solved.totalSubmissionNum.find((s) => s.difficulty === "All")
       ?.submissions || 1;
   const acSub =
-    data.solved.acSubmissionNum.find((s) => s.difficulty === "All")?.count || 0;
+    data?.solved.acSubmissionNum.find((s) => s.difficulty === "All")?.count || 0;
   const acceptanceRate = ((acSub / totalSub) * 100).toFixed(1);
 
   // Skill stats preparation
@@ -133,14 +134,14 @@ export default async function UserProfilePage({
 
   // Get top skills from tagProblemCounts
   const allSkills = [
-    ...(data.skillStats?.tagProblemCounts?.fundamental || []),
-    ...(data.skillStats?.tagProblemCounts?.intermediate || []),
-    ...(data.skillStats?.tagProblemCounts?.advanced || []),
+    ...(data?.skillStats?.tagProblemCounts?.fundamental || []),
+    ...(data?.skillStats?.tagProblemCounts?.intermediate || []),
+    ...(data?.skillStats?.tagProblemCounts?.advanced || []),
   ].sort((a, b) => b.problemsSolved - a.problemsSolved);
 
   // Recent Contests
   const recentContests =
-    data.contests.contestHistory
+    data?.contests.contestHistory
       ?.filter((c) => c.attended)
       .slice(-3)
       .reverse() || [];
@@ -163,21 +164,21 @@ export default async function UserProfilePage({
     }
     return 10;
   }
-  const userBadgesa = (data.badges?.badges || []) as { displayName: string }[];
+  const userBadgesa = (data?.badges?.badges || []) as { displayName: string }[];
   const totalPointsa = userBadgesa.reduce(
     (sum: number, badge) => sum + calculateBadgePoints(badge),
     0,
   );
   const points =
-    data.solved.easySolved * 5 +
-    data.solved.mediumSolved * 10 +
-    data.solved.hardSolved * 15 +
-    calculateStreak(data.calendar.submissionCalendar) +
+    (data?.solved.easySolved ?? 0) * 5 +
+    (data?.solved.mediumSolved ?? 0) * 10 +
+    (data?.solved.hardSolved ?? 0) * 15 +
+    (calculateStreak(data?.calendar.submissionCalendar) ?? 0) +
     totalPointsa;
   return (
     <main className="min-h-screen bg-[#131f24] text-white p-4 overflow-hidden">
+      <BackButton />
       <div className="max-w-5xl mx-auto space-y-4">
-        <BackButton />
         {/* HEADER SECTION */}
         <AnimateIn direction="down" delay={0.1}>
           <div className="flex flex-col items-center">
@@ -202,8 +203,8 @@ export default async function UserProfilePage({
               <div className="relative">
                 <div className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-[#58cc02] p-1 bg-[#131f24]">
                   <Image
-                    src={data.profile.avatar}
-                    alt={data.profile.username}
+                    src={data?.profile.avatar ? data?.profile.avatar : "/duocode.png"}
+                    alt={data?.profile.username ? `Avatar for ${data?.profile.username}` : "Default avatar"}
                     width={200}
                     height={200}
                     priority
@@ -215,16 +216,16 @@ export default async function UserProfilePage({
               <div className="text-center md:text-left flex-1">
                 <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-5">
                   <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-none">
-                    {data.profile.name || data.profile.username}
+                    {data?.profile.name || data?.profile.username}
                   </h1>
                   <span className="text-zinc-500 font-bold text-xl md:text-2xl">
-                    @{data.profile.username}
+                    @{data?.profile.username}
                   </span>
                 </div>
 
                 <div className="flex flex-wrap justify-center md:justify-start gap-3 mt-5">
                   <span className="bg-[#1cb0f6]/20 text-[#1cb0f6] px-5 py-2 rounded-2xl border-2 border-[#1cb0f6]/30 font-black text-sm uppercase tracking-wider">
-                    Rank #{data.profile.ranking.toLocaleString()}
+                    Rank #{data?.profile.ranking.toLocaleString()}
                   </span>
                   <span
                     className={`${league.colorClasses} px-5 py-2 rounded-2xl border-2 font-black text-sm uppercase tracking-wider`}
@@ -245,24 +246,24 @@ export default async function UserProfilePage({
                       />
                     </Link>
                   </span>
-                  {data.profile.country && (
+                  {data?.profile.country && (
                     <span className="bg-zinc-800 text-zinc-400 px-5 py-2 rounded-2xl border-2 border-zinc-700 font-black text-sm uppercase tracking-wider flex items-center gap-2">
-                      <MapPin size={14} /> {data.profile.country}
+                      <MapPin size={14} /> {data?.profile.country}
                     </span>
                   )}
                 </div>
 
-                {data.profile.about && (
+                {data?.profile.about && (
                   <p className="mt-6 text-zinc-400 font-medium leading-relaxed max-w-2xl text-lg">
-                    {data.profile.about}
+                    {data?.profile.about}
                   </p>
                 )}
 
                 {/* Social Links */}
                 <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-6">
-                  {data.profile.gitHub && (
+                  {data?.profile.gitHub && (
                     <a
-                      href={data.profile.gitHub}
+                      href={data?.profile.gitHub}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-zinc-500 hover:text-white transition-colors"
@@ -270,9 +271,9 @@ export default async function UserProfilePage({
                       <FaGithub size={20} />
                     </a>
                   )}
-                  {data.profile.twitter && (
+                  {data?.profile.twitter && (
                     <a
-                      href={data.profile.twitter}
+                      href={data?.profile.twitter}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-zinc-500 hover:text-white transition-colors"
@@ -280,9 +281,9 @@ export default async function UserProfilePage({
                       <X size={20} />
                     </a>
                   )}
-                  {data.profile.linkedIn && (
+                  {data?.profile.linkedIn && (
                     <a
-                      href={data.profile.linkedIn}
+                      href={data?.profile.linkedIn}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-zinc-500 hover:text-white transition-colors"
@@ -292,7 +293,7 @@ export default async function UserProfilePage({
                   )}
                 </div>
                 <div className="flex flex-row flex-wrap gap-4">
-                  {data.badges.badges?.slice(0, 6).map((badge) => (
+                  {data?.badges.badges?.slice(0, 6).map((badge) => (
                     <BadgeIcon
                       key={badge.id}
                       name={badge.displayName}
@@ -336,28 +337,28 @@ export default async function UserProfilePage({
             <StatCard
               label="Contest Rating"
               value={
-                data.contests.contestRating
-                  ? Math.round(data.contests.contestRating)
+                data?.contests.contestRating
+                  ? Math.round(data?.contests.contestRating)
                   : "N/A"
               }
               icon={<Swords size={32} />}
               color="purple"
               description={
-                data.contests.contestTopPercentage
-                  ? `Top ${data.contests.contestTopPercentage}%`
+                data?.contests.contestTopPercentage
+                  ? `Top ${data?.contests.contestTopPercentage}%`
                   : "Global competition"
               }
             />
             <StatCard
               label="Community"
-              value={data.community.reputation}
+              value={data?.community.reputation ? data?.community.reputation.toString() : "N/A"}
               icon={<Handshake size={32} />}
               color="blue"
-              description={`${data.community.solutionCount} Solutions`}
+              description={`${data?.community.solutionCount ? data?.community.solutionCount.toString() : "N/A"} Solutions`}
             />
             <StatCard
               label="Badges"
-              value={data.badges.badgesCount}
+              value={data?.badges.badgesCount ? data?.badges.badgesCount.toString() : "N/A"}
               icon={<Medal size={32} />}
               color="orange"
               description={`Badges earned`}
@@ -380,19 +381,19 @@ export default async function UserProfilePage({
                 <div className="space-y-6">
                   <ProgressBar
                     label="Easy"
-                    value={data.solved.easySolved}
+                    value={data?.solved.easySolved ?? 0}
                     total={easyTotal}
                     color="green"
                   />
                   <ProgressBar
                     label="Medium"
-                    value={data.solved.mediumSolved}
+                    value={data?.solved.mediumSolved ?? 0}
                     total={mediumTotal}
                     color="orange"
                   />
                   <ProgressBar
                     label="Hard"
-                    value={data.solved.hardSolved}
+                    value={data?.solved.hardSolved ?? 0}
                     total={hardTotal}
                     color="red"
                   />
@@ -553,7 +554,7 @@ export default async function UserProfilePage({
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-[#131f24] p-4 rounded-2xl border-2 border-b-4 border-[#37464f] text-center">
                     <div className="text-2xl font-black text-white">
-                      {data.community.postCount}
+                      {data?.community.postCount}
                     </div>
                     <div className="text-zinc-500 font-bold text-[10px] uppercase mt-1">
                       Posts
@@ -561,7 +562,7 @@ export default async function UserProfilePage({
                   </div>
                   <div className="bg-[#131f24] p-4 rounded-2xl border-2 border-b-4 border-[#37464f] text-center">
                     <div className="text-2xl font-black text-white">
-                      {data.community.solutionCount}
+                      {data?.community.solutionCount}
                     </div>
                     <div className="text-zinc-500 font-bold text-[10px] uppercase mt-1">
                       Solutions

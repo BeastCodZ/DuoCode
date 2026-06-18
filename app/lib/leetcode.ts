@@ -215,7 +215,7 @@ export async function getFullUser(
     reputation: (profile.reputation ?? 0) as number,
     gitHub: profile.gitHub || '',
     twitter: profile.twitter || '',
-    points: (profile.points ?? 0) as number,
+    points: (profile as unknown as { points?: number }).points ?? 0,
     linkedIn: (profile as unknown as { linkedIN?: string }).linkedIN || (profile as unknown as { linkedIn?: string }).linkedIn || '', // Handle case difference
     website: profile.website || [],
     country: profile.country || '',

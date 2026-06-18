@@ -24,11 +24,12 @@ import {
   ArrowUp,
   ArrowDown,
   X,
-  Check,  
+  Check,
 } from "lucide-react";
-import Link from "next/link"
+import Link from "next/link";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import Image from "next/image";
+import BackButton from "@/components/BackButton";
 
 export default async function UserProfilePage({
   params,
@@ -128,14 +129,21 @@ export default async function UserProfilePage({
   return (
     <main className="min-h-screen bg-[#131f24] text-white p-4 overflow-hidden">
       <div className="max-w-5xl mx-auto space-y-4">
+        <BackButton />
         {/* HEADER SECTION */}
         <AnimateIn direction="down" delay={0.1}>
-                    <div className="flex flex-col items-center">
-                    <Link href="/">
-                    <Image src="/banner.webp" alt="DuoCode Banner" width={128} height={128} className="w-auto h-auto" />
-                    </Link>
-                    </div>
-                </AnimateIn>
+          <div className="flex flex-col items-center">
+            <Link href="/">
+              <Image
+                src="/banner.webp"
+                alt="DuoCode Banner"
+                width={128}
+                height={128}
+                className="w-auto h-auto"
+              />
+            </Link>
+          </div>
+        </AnimateIn>
         <AnimateIn direction="down" delay={0.1}>
           <div className="bg-[#202f36] border-2 border-b-8 border-[#37464f] rounded-[40px] p-8 md:p-12 relative overflow-hidden group">
             <div
@@ -243,7 +251,11 @@ export default async function UserProfilePage({
               value={`${currentStreak} Days`}
               icon={<Flame size={32} />}
               color="orange"
-              description={currentStreak > 1 ? "Keep it up!" : "Let's get the party started!"}
+              description={
+                currentStreak > 1
+                  ? "Keep it up!"
+                  : "Let's get the party started!"
+              }
             />
             <StatCard
               label="Solved Today"
@@ -428,7 +440,6 @@ export default async function UserProfilePage({
 
           {/* RIGHT COLUMN */}
           <div className="space-y-8">
-
             {/* RECENT ACTIVITY */}
             {submissions.length > 0 && (
               <AnimateIn direction="right" delay={0.4}>

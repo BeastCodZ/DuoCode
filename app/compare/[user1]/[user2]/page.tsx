@@ -14,6 +14,7 @@ import {
   Lightbulb,
 } from "lucide-react";
 import Link from "next/link";
+import BackButton from "@/components/BackButton";
 
 type Props = {
   params: Promise<{
@@ -25,16 +26,18 @@ type Props = {
 function MiniProfile({
   user,
   winner,
+  points,
 }: {
   user: FullUserData;
   winner?: boolean;
+  points: number;
 }) {
   return (
-    <Link href={`/u/${user.profile.username}`}>
       <div
         className={`flex flex-col rounded-2xl items-center gap-4 transition-transform duration-500 p-4`}
       >
         <div className="relative">
+          <Link href={`/u/${user.profile.username}`}>
           <div
             className={`w-24 h-24 md:w-32 md:h-32 rounded-full border-4 ${winner ? "border-[#ffc800]" : "border-zinc-700"} p-1.5 bg-[#131f24] relative shadow-2xl`}
           >
@@ -47,6 +50,7 @@ function MiniProfile({
               className="w-full h-full rounded-full object-cover"
             />
           </div>
+          </Link>
           {winner && (
             <div className="absolute -top-5 -right-5 text-[#ffc800] animate-bounce">
               <Crown size={40} fill="currentColor" />
@@ -54,17 +58,25 @@ function MiniProfile({
           )}
         </div>
         <div className="text-center">
+          <Link href={`/u/${user.profile.username}`}>
           <h2
             className={`text-xl md:text-2xl font-black ${winner ? "text-[#ffc800]" : "text-white"}`}
           >
             {user.profile.username}
           </h2>
-          <p className="text-zinc-500 font-bold text-xs uppercase tracking-widest mt-1.5 bg-zinc-800/50 px-2 py-0.5 rounded-md inline-block">
+          </Link>
+          <div className="flex flex-col bg-[#1b272c] rounded-md shadow-[0px_3px_0px_0px_#293941] px-2 py-0.5 mt-1 gap-1">
+          <p className="text-zinc-400 font-bold text-xs uppercase tracking-widest inline-block">
             Rank #{user.profile.ranking.toLocaleString()}
           </p>
+          <Link href={`/points`}>
+          <p className="text-zinc-400 font-bold text-xs uppercase tracking-widest inline-block">
+            Points {points}
+          </p>
+          </Link>
+          </div>
         </div>
       </div>
-    </Link>
   );
 }
 function getSolvedToday(
@@ -80,16 +92,31 @@ function getSolvedToday(
   ).size;
 }
 
+function calculateBadgePoints(badge: { displayName: string }) {
+  const name = badge.displayName || "";
+
+    if (name.includes("Days")) {
+        return 40; 
+    }
+    
+    if (name.includes("Challenge")) {
+        return 30;
+    }
+
+    if (name === "Guardian") {
+        return 80;
+    }
+    if (name === "Knight") {
+        return 60;
+    }
+    return 10;
+}
+
+
 export default async function ComparePage({ params }: Props) {
   const { user1, user2 } = await params;
   const [a, b] = await Promise.all([getFullUser(user1), getFullUser(user2)]);
 
-  const aSolved = a.solved.solvedProblem;
-  const bSolved = b.solved.solvedProblem;
-
-  const winner = aSolved > bSolved ? a.profile.username : b.profile.username;
-
-  // Acceptance Rate
   const getAcceptanceRate = (data: FullUserData) => {
     const total =
       data.solved.totalSubmissionNum.find((s) => s.difficulty === "All")
@@ -100,7 +127,6 @@ export default async function ComparePage({ params }: Props) {
     return Math.round((ac / total) * 100);
   };
 
-  // Extract shared skills for comparison
   const getTopSkills = (data: FullUserData) => {
     return [
       ...(data.skillStats?.tagProblemCounts?.fundamental || []),
@@ -150,9 +176,29 @@ export default async function ComparePage({ params }: Props) {
   const solvedTodaya = getSolvedToday(submissionsa);
   const solvedTodayb = getSolvedToday(submissionsb);
 
+  const userBadgesa = (a.badges?.badges || []) as { displayName: string }[];
+  const userBadgesb = (b.badges?.badges || []) as { displayName: string }[];
+  const totalPointsa = userBadgesa.reduce((sum: number, badge) => sum + calculateBadgePoints(badge), 0);
+  const totalPointsb = userBadgesb.reduce((sum: number, badge) => sum + calculateBadgePoints(badge), 0);
+  const aPoints =
+    a.solved.easySolved * 5 +
+    a.solved.mediumSolved * 10 +
+    a.solved.hardSolved * 15 +
+    calculateStreak(a.calendar.submissionCalendar) +
+    totalPointsa;
+  const bPoints =
+    b.solved.easySolved * 5 +
+    b.solved.mediumSolved * 10 +
+    b.solved.hardSolved * 15 +
+    calculateStreak(b.calendar.submissionCalendar) +
+    totalPointsb;
+
+  const winner = aPoints > bPoints ? a.profile.username : b.profile.username;
+
   return (
     <main className="min-h-screen bg-[#131f24] text-white p-4 overflow-hidden">
       <div className="max-w-5xl mx-auto space-y-4">
+        <BackButton/>
         {/* BATTLE HEADER */}
         <AnimateIn direction="down" delay={0.1}>
           <div className="flex flex-col items-center">
@@ -190,9 +236,9 @@ export default async function ComparePage({ params }: Props) {
                 </div>
               </AnimateIn>
             </div>
-            <MiniProfile user={a} winner={a.profile.username === winner} />
+            <MiniProfile user={a} winner={a.profile.username === winner} points={aPoints} />
 
-            <MiniProfile user={b} winner={b.profile.username === winner} />
+            <MiniProfile user={b} winner={b.profile.username === winner} points={bPoints} />
           </div>
         </AnimateIn>
 

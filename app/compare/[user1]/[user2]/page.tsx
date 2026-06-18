@@ -34,11 +34,11 @@ function MiniProfile({
   points: number;
 }) {
   return (
-      <div
-        className={`flex flex-col rounded-2xl items-center gap-4 transition-transform duration-500 p-4`}
-      >
-        <div className="relative">
-          <Link href={`/u/${user.profile.username}`}>
+    <div
+      className={`flex flex-col rounded-2xl items-center gap-4 transition-transform duration-500 p-4`}
+    >
+      <div className="relative">
+        <Link href={`/u/${user.profile.username}`}>
           <div
             className={`w-24 h-24 md:w-32 md:h-32 rounded-full border-4 ${winner ? "border-[#ffc800]" : "border-zinc-700"} p-1.5 bg-[#131f24] relative shadow-2xl`}
           >
@@ -51,42 +51,42 @@ function MiniProfile({
               className="w-full h-full rounded-full object-cover"
             />
           </div>
-          </Link>
-          {winner && (
-            <div className="absolute -top-5 -right-5 text-[#ffc800] animate-bounce">
-              <Crown size={40} fill="currentColor" />
-            </div>
-          )}
-        </div>
-        <div className="text-center">
-  <Link href={`/u/${user.profile.username}`}>
-    <h2
-      className={`text-xl md:text-2xl font-black transition-colors ${
-        winner ? "text-[#ffc800]" : "text-white hover:text-[#58cc02]"
-      }`}
-    >
-      {user.profile.username}
-    </h2>
-  </Link>
-
-  <div className="mt-2 flex flex-col gap-1 rounded-md bg-[#1b272c] px-3 py-1 shadow-[0px_3px_0px_0px_#293941]">
-    <p className="text-xs font-black uppercase tracking-widest text-zinc-400">
-      Rank #{user.profile.ranking.toLocaleString()}
-    </p>
-
-    <Link
-      href="/points"
-      className="group inline-flex items-center justify-center gap-1 text-xs font-black uppercase tracking-widest text-zinc-400 transition-colors hover:text-[#1cb0f6]"
-    >
-      <span>Points {points}</span>
-      <InfoIcon
-        size={12}
-        className="transition-transform group-hover:scale-110"
-      />
-    </Link>
-  </div>
-</div>
+        </Link>
+        {winner && (
+          <div className="absolute -top-5 -right-5 text-[#ffc800] animate-bounce">
+            <Crown size={40} fill="currentColor" />
+          </div>
+        )}
       </div>
+      <div className="text-center">
+        <Link href={`/u/${user.profile.username}`}>
+          <h2
+            className={`text-xl md:text-2xl font-black transition-colors ${
+              winner ? "text-[#ffc800]" : "text-white hover:text-[#58cc02]"
+            }`}
+          >
+            {user.profile.username}
+          </h2>
+        </Link>
+
+        <div className="mt-2 flex flex-col gap-1 rounded-md bg-[#1b272c] px-3 py-1 shadow-[0px_3px_0px_0px_#293941]">
+          <p className="text-xs font-black uppercase tracking-widest text-zinc-400">
+            Rank #{user.profile.ranking.toLocaleString()}
+          </p>
+
+          <Link
+            href="/points"
+            className="group inline-flex items-center justify-center gap-1 text-xs font-black uppercase tracking-widest text-zinc-400 transition-colors hover:text-[#1cb0f6]"
+          >
+            <span>Points {points}</span>
+            <InfoIcon
+              size={12}
+              className="transition-transform group-hover:scale-110"
+            />
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 }
 function getSolvedToday(
@@ -118,23 +118,22 @@ function getSolvedToday(
 function calculateBadgePoints(badge: { displayName: string }) {
   const name = badge.displayName || "";
 
-    if (name.includes("Days")) {
-        return 40; 
-    }
-    
-    if (name.includes("Challenge")) {
-        return 30;
-    }
+  if (name.includes("Days")) {
+    return 40;
+  }
 
-    if (name === "Guardian") {
-        return 80;
-    }
-    if (name === "Knight") {
-        return 60;
-    }
-    return 10;
+  if (name.includes("Challenge")) {
+    return 30;
+  }
+
+  if (name === "Guardian") {
+    return 80;
+  }
+  if (name === "Knight") {
+    return 60;
+  }
+  return 10;
 }
-
 
 export default async function ComparePage({ params }: Props) {
   const { user1, user2 } = await params;
@@ -193,18 +192,20 @@ export default async function ComparePage({ params }: Props) {
     )
     .slice(0, 5);
 
-  const solvedTodaya = getSolvedToday(
-  a.latestAccepted?.submission ?? []
-);
+  const solvedTodaya = getSolvedToday(a.latestAccepted?.submission ?? []);
 
-const solvedTodayb = getSolvedToday(
-  b.latestAccepted?.submission ?? []
-);
+  const solvedTodayb = getSolvedToday(b.latestAccepted?.submission ?? []);
 
   const userBadgesa = (a.badges?.badges || []) as { displayName: string }[];
   const userBadgesb = (b.badges?.badges || []) as { displayName: string }[];
-  const totalPointsa = userBadgesa.reduce((sum: number, badge) => sum + calculateBadgePoints(badge), 0);
-  const totalPointsb = userBadgesb.reduce((sum: number, badge) => sum + calculateBadgePoints(badge), 0);
+  const totalPointsa = userBadgesa.reduce(
+    (sum: number, badge) => sum + calculateBadgePoints(badge),
+    0,
+  );
+  const totalPointsb = userBadgesb.reduce(
+    (sum: number, badge) => sum + calculateBadgePoints(badge),
+    0,
+  );
   const aPoints =
     a.solved.easySolved * 5 +
     a.solved.mediumSolved * 10 +
@@ -223,7 +224,7 @@ const solvedTodayb = getSolvedToday(
   return (
     <main className="min-h-screen bg-[#131f24] text-white p-4 overflow-hidden">
       <div className="max-w-5xl mx-auto space-y-4">
-        <BackButton/>
+        <BackButton />
         {/* BATTLE HEADER */}
         <AnimateIn direction="down" delay={0.1}>
           <div className="flex flex-col items-center">
@@ -243,7 +244,7 @@ const solvedTodayb = getSolvedToday(
         <AnimateIn direction="scale" delay={0.2}>
           <div className="flex justify-between items-center bg-[#202f36] border-2 border-b-8 border-[#37464f] rounded-[40px] p-4 md:p-6 relative overflow-hidden group ">
             {/* Decorative Background */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[8rem] md:text-[12rem] font-black text-white/5 pointer-events-none select-none italic group-hover:text-white/10 transition-colors">
+            <div className="absolute top-1/4 md:top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[8rem] md:text-[12rem] font-black text-white/5 pointer-events-none select-none italic group-hover:text-white/10 transition-colors">
               <AnimateIn
                 direction="scale"
                 delay={0.6}
@@ -254,16 +255,24 @@ const solvedTodayb = getSolvedToday(
                   alt="DuoCode"
                   width={128}
                   height={128}
-                  className="w-16 md:w-32 opacity-60"
+                  className="w-20 md:w-32 opacity-90"
                 />
-                <div className="bg-[#46a500] opacity-60 text-white px-2 md:px-6 py-1 md:py-2 rounded-2xl font-black text-xs md:text-sm shadow-[0_2px_0_0_#3b5200] transform -rotate-2 hover:rotate-0 transition-transform cursor-default">
-                  WINNER: {winner.toUpperCase()}
+                <div className="bg-[#46a500] opacity-80 text-white px-2 md:px-6 py-1 md:py-2 rounded-2xl font-black text-[0.7rem] md:text-base shadow-[0_2px_0_0_#3b5200] transform -rotate-2 hover:rotate-0 transition-transform cursor-default flex flex-col items-center">
+                  <span>WINNER:</span> <span>{winner.toUpperCase()}</span>
                 </div>
               </AnimateIn>
             </div>
-            <MiniProfile user={a} winner={a.profile.username === winner} points={aPoints} />
+            <MiniProfile
+              user={a}
+              winner={a.profile.username === winner}
+              points={aPoints}
+            />
 
-            <MiniProfile user={b} winner={b.profile.username === winner} points={bPoints} />
+            <MiniProfile
+              user={b}
+              winner={b.profile.username === winner}
+              points={bPoints}
+            />
           </div>
         </AnimateIn>
 

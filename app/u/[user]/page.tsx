@@ -25,6 +25,7 @@ import {
   ArrowDown,
   X,
   Check,
+  InfoIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
@@ -46,14 +47,32 @@ export default async function UserProfilePage({
   const heatmapValues = getLastNDays(data.calendar.submissionCalendar, 35);
   const today = new Date().toDateString();
 
-  const solvedToday = new Set(
-    submissions
-      .filter(
-        (sub) =>
-          new Date(Number(sub.timestamp) * 1000).toDateString() === today,
-      )
-      .map((sub) => sub.titleSlug),
-  ).size;
+  function getSolvedToday(
+    submissions: { timestamp: string; titleSlug: string }[],
+  ) {
+    const now = new Date();
+
+    const todayYear = now.getUTCFullYear();
+    const todayMonth = now.getUTCMonth();
+    const todayDate = now.getUTCDate();
+
+    const solved = new Set<string>();
+
+    for (const sub of submissions) {
+      const d = new Date(Number(sub.timestamp) * 1000);
+
+      if (
+        d.getUTCFullYear() === todayYear &&
+        d.getUTCMonth() === todayMonth &&
+        d.getUTCDate() === todayDate
+      ) {
+        solved.add(sub.titleSlug);
+      }
+    }
+
+    return solved.size;
+  }
+  const solvedToday = getSolvedToday(data.latestAccepted?.submission ?? []);
   const currentStreak = Math.max(
     calculateStreak(data.calendar.submissionCalendar),
   );
@@ -125,7 +144,36 @@ export default async function UserProfilePage({
       ?.filter((c) => c.attended)
       .slice(-3)
       .reverse() || [];
+  function calculateBadgePoints(badge: { displayName: string }) {
+    const name = badge.displayName || "";
 
+    if (name.includes("Days")) {
+      return 40;
+    }
+
+    if (name.includes("Challenge")) {
+      return 30;
+    }
+
+    if (name === "Guardian") {
+      return 80;
+    }
+    if (name === "Knight") {
+      return 60;
+    }
+    return 10;
+  }
+  const userBadgesa = (data.badges?.badges || []) as { displayName: string }[];
+  const totalPointsa = userBadgesa.reduce(
+    (sum: number, badge) => sum + calculateBadgePoints(badge),
+    0,
+  );
+  const points =
+    data.solved.easySolved * 5 +
+    data.solved.mediumSolved * 10 +
+    data.solved.hardSolved * 15 +
+    calculateStreak(data.calendar.submissionCalendar) +
+    totalPointsa;
   return (
     <main className="min-h-screen bg-[#131f24] text-white p-4 overflow-hidden">
       <div className="max-w-5xl mx-auto space-y-4">
@@ -182,6 +230,20 @@ export default async function UserProfilePage({
                     className={`${league.colorClasses} px-5 py-2 rounded-2xl border-2 font-black text-sm uppercase tracking-wider`}
                   >
                     {league.name} League
+                  </span>
+                  <span
+                    className={`bg-[#1b272c] text-zinc-400 px-5 py-2 rounded-2xl border-2 border-[#293941] font-black text-sm uppercase tracking-wider transition-colors hover:text-[#1cb0f6]`}
+                  >
+                    <Link
+                      href="/points"
+                      className="flex flex-row items-center gap-2 justify-center"
+                    >
+                      {points} Points{" "}
+                      <InfoIcon
+                        size={12}
+                        className="transition-transform group-hover:scale-110"
+                      />
+                    </Link>
                   </span>
                   {data.profile.country && (
                     <span className="bg-zinc-800 text-zinc-400 px-5 py-2 rounded-2xl border-2 border-zinc-700 font-black text-sm uppercase tracking-wider flex items-center gap-2">

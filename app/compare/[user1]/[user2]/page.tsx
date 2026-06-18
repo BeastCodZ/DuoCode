@@ -12,6 +12,7 @@ import {
   Handshake,
   MessageSquare,
   Lightbulb,
+  InfoIcon,
 } from "lucide-react";
 import Link from "next/link";
 import BackButton from "@/components/BackButton";
@@ -58,38 +59,60 @@ function MiniProfile({
           )}
         </div>
         <div className="text-center">
-          <Link href={`/u/${user.profile.username}`}>
-          <h2
-            className={`text-xl md:text-2xl font-black ${winner ? "text-[#ffc800]" : "text-white"}`}
-          >
-            {user.profile.username}
-          </h2>
-          </Link>
-          <div className="flex flex-col bg-[#1b272c] rounded-md shadow-[0px_3px_0px_0px_#293941] px-2 py-0.5 mt-1 gap-1">
-          <p className="text-zinc-400 font-bold text-xs uppercase tracking-widest inline-block">
-            Rank #{user.profile.ranking.toLocaleString()}
-          </p>
-          <Link href={`/points`}>
-          <p className="text-zinc-400 font-bold text-xs uppercase tracking-widest inline-block">
-            Points {points}
-          </p>
-          </Link>
-          </div>
-        </div>
+  <Link href={`/u/${user.profile.username}`}>
+    <h2
+      className={`text-xl md:text-2xl font-black transition-colors ${
+        winner ? "text-[#ffc800]" : "text-white hover:text-[#58cc02]"
+      }`}
+    >
+      {user.profile.username}
+    </h2>
+  </Link>
+
+  <div className="mt-2 flex flex-col gap-1 rounded-md bg-[#1b272c] px-3 py-1 shadow-[0px_3px_0px_0px_#293941]">
+    <p className="text-xs font-black uppercase tracking-widest text-zinc-400">
+      Rank #{user.profile.ranking.toLocaleString()}
+    </p>
+
+    <Link
+      href="/points"
+      className="group inline-flex items-center justify-center gap-1 text-xs font-black uppercase tracking-widest text-zinc-400 transition-colors hover:text-[#1cb0f6]"
+    >
+      <span>Points {points}</span>
+      <InfoIcon
+        size={12}
+        className="transition-transform group-hover:scale-110"
+      />
+    </Link>
+  </div>
+</div>
       </div>
   );
 }
 function getSolvedToday(
   submissions: { timestamp: string; titleSlug: string }[],
 ) {
-  const startOfToday = new Date();
-  startOfToday.setHours(0, 0, 0, 0);
+  const now = new Date();
 
-  return new Set(
-    submissions
-      .filter((sub) => Number(sub.timestamp) * 1000 >= startOfToday.getTime())
-      .map((sub) => sub.titleSlug),
-  ).size;
+  const todayYear = now.getUTCFullYear();
+  const todayMonth = now.getUTCMonth();
+  const todayDate = now.getUTCDate();
+
+  const solved = new Set<string>();
+
+  for (const sub of submissions) {
+    const d = new Date(Number(sub.timestamp) * 1000);
+
+    if (
+      d.getUTCFullYear() === todayYear &&
+      d.getUTCMonth() === todayMonth &&
+      d.getUTCDate() === todayDate
+    ) {
+      solved.add(sub.titleSlug);
+    }
+  }
+
+  return solved.size;
 }
 
 function calculateBadgePoints(badge: { displayName: string }) {
@@ -170,11 +193,13 @@ export default async function ComparePage({ params }: Props) {
     )
     .slice(0, 5);
 
-  const submissionsa = a.latestAccepted?.submission ?? [];
-  const submissionsb = b.latestAccepted?.submission ?? [];
+  const solvedTodaya = getSolvedToday(
+  a.latestAccepted?.submission ?? []
+);
 
-  const solvedTodaya = getSolvedToday(submissionsa);
-  const solvedTodayb = getSolvedToday(submissionsb);
+const solvedTodayb = getSolvedToday(
+  b.latestAccepted?.submission ?? []
+);
 
   const userBadgesa = (a.badges?.badges || []) as { displayName: string }[];
   const userBadgesb = (b.badges?.badges || []) as { displayName: string }[];

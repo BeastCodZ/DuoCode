@@ -16,6 +16,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import BackButton from "@/components/BackButton";
+import { notFound } from "next/navigation";
+import Error from "@/components/Error";
 
 type Props = {
   params: Promise<{
@@ -138,6 +140,21 @@ function calculateBadgePoints(badge: { displayName: string }) {
 export default async function ComparePage({ params }: Props) {
   const { user1, user2 } = await params;
   const [a, b] = await Promise.all([getFullUser(user1), getFullUser(user2)]);
+  if (!a?.profile?.username) {
+    return (
+      <Error error="user-not-found" username={user1} />
+    );
+  }
+  if (!b?.profile?.username) {
+    return (
+      <Error error="user-not-found" username={user2} />
+    );
+  }
+  if (a.profile.username == b.profile.username) {
+    return (
+      <Error error="custom" text="Users cannot compare against themselves." />
+    );
+  }
 
   const getAcceptanceRate = (data: FullUserData) => {
     const total =

@@ -85,7 +85,7 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-[#131f24] text-white flex items-center justify-center px-4 font-sans py-10 overflow-hidden">
-      <div className="max-w-3xl w-full">
+      <div className="max-w-md md:max-w-3xl w-full">
         <AnimateIn direction="down" delay={0.1}>
           <div className="text-center mb-12">
             <div className="inline-block rounded-2xl border-2 border-[#37464f] bg-[#202f36] p-6">
@@ -117,7 +117,8 @@ export default function HomePage() {
         <div className="grid md:grid-cols-2 gap-8">
           {/* PROFILE CARD */}
           <AnimateIn direction="left" delay={0.4} className="h-full">
-            <div className="bg-[#202f36] rounded-4xl p-6 border-2 border-b-8 border-[#37464f] transition-transform hover:-translate-y-1 h-full grid">
+            <div className="h-full bg-[#202f36] rounded-4xl p-6 border-2 border-b-8 border-[#37464f] transition-transform hover:-translate-y-1">
+            <div>
               <h2 className="text-2xl font-black mb-6 flex items-center gap-3">
                 <span className="bg-[#1cb0f6] p-2 rounded-2xl text-white">
                   <User size={24} />
@@ -128,6 +129,7 @@ export default function HomePage() {
                 <input
                   value={profileUser}
                   onChange={(e) => setProfileUser(e.target.value)}
+                  maxLength={40}
                   placeholder="LeetCode Username"
                   className="w-full bg-[#131f24] border-2 border-[#37464f] rounded-2xl px-4 py-3 outline-none focus:border-[#58cc02] font-bold transition-colors text-white"
                   onKeyDown={(e) => e.key === "Enter" && handleProfileSubmit()}
@@ -136,6 +138,7 @@ export default function HomePage() {
                   onClick={handleProfileSubmit}
                   className="w-full bg-[#58cc02] hover:bg-[#46a302] text-white font-black rounded-2xl py-3 text-lg shadow-[0_4px_0_0_#46a302] active:shadow-none active:translate-y-1 transition-all uppercase tracking-wider disabled:opacity-50 disabled:active:translate-y-0 disabled:shadow-none"
                   disabled={!profileUser}
+                  
                 >
                   Go
                 </button>
@@ -155,16 +158,27 @@ export default function HomePage() {
                           {user}
                         </button>
                       ))}
+                      <button 
+                    onClick={() => {
+                      setRecentUsers([]);
+                      localStorage.removeItem("recentUsers");
+                    }}
+                    className="bg-[#202f36] border-2 border-b-4 border-[#ce82ff]/50 hover:border-[#ce82ff] px-4 py-2 rounded-2xl font-bold text-sm text-[#ce82ff] transition-all hover:-translate-y-1 active:translate-y-0 active:border-b-2 flex items-center gap-2"
+                  >
+                    Clear List
+                  </button>
                     </div>
                   )}
                 </AnimateIn>
               )}
             </div>
+            </div>
           </AnimateIn>
 
           {/* COMPARE CARD */}
           <AnimateIn direction="right" delay={0.5} className="h-full">
-            <div className="bg-[#202f36] rounded-4xl p-6 border-2 border-b-8 border-[#37464f] transition-transform hover:-translate-y-1 h-full grid">
+            <div className="h-full bg-[#202f36] rounded-4xl p-6 border-2 border-b-8 border-[#37464f] transition-transform hover:-translate-y-1 grid">
+              <div>
               <h2 className="text-2xl font-black mb-6 flex items-center gap-3">
                 <span className="bg-[#ce82ff] p-2 rounded-2xl text-white">
                   <Swords size={24} />
@@ -174,6 +188,7 @@ export default function HomePage() {
               <div className="space-y-3 mt-auto">
                 <input
                   value={user1}
+                  maxLength={40}
                   onChange={(e) => setUser1(e.target.value)}
                   placeholder="First User"
                   className="w-full bg-[#131f24] border-2 border-[#37464f] rounded-2xl px-4 py-3 outline-none focus:border-[#ce82ff] font-bold transition-colors text-white"
@@ -181,12 +196,14 @@ export default function HomePage() {
                 <input
                   value={user2}
                   onChange={(e) => setUser2(e.target.value)}
+                  maxLength={40}
                   placeholder="Second User"
                   className="w-full bg-[#131f24] border-2 border-[#37464f] rounded-2xl px-4 py-3 outline-none focus:border-[#ce82ff] font-bold transition-colors text-white"
                   onKeyDown={(e) => e.key === "Enter" && handleBattleSubmit()}
                 />
                 <button
                   onClick={handleBattleSubmit}
+                  type="button"
                   className="w-full bg-[#ce82ff] hover:bg-[#a568cc] text-white font-black rounded-2xl py-3 text-lg shadow-[0_4px_0_0_#a568cc] active:shadow-none active:translate-y-1 transition-all uppercase tracking-wider disabled:opacity-50 disabled:active:translate-y-0 disabled:shadow-none"
                   disabled={!user1 || !user2}
                 >
@@ -208,15 +225,25 @@ export default function HomePage() {
                       {b.u2}
                     </button>
                   ))}
+                  <button 
+                    onClick={() => {
+                      setRecentBattles([]);
+                      localStorage.removeItem("recentBattles");
+                    }}
+                    className="bg-[#202f36] border-2 border-b-4 border-[#ce82ff]/50 hover:border-[#ce82ff] px-4 py-2 rounded-2xl font-bold text-sm text-[#ce82ff] transition-all hover:-translate-y-1 active:translate-y-0 active:border-b-2 flex items-center gap-2"
+                  >
+                    Clear List
+                  </button>
                 </div>
               )}
+              </div>
             </div>
           </AnimateIn>
         </div>
         {/* DAILY QUEST SECTION */}
         {daily && (
           <AnimateIn direction="up" delay={0.3}>
-            <div className="bg-[#202f36] border-2 border-b-8 border-[#1cb0f6] rounded-4xl p-4 md:p-8 mt-10 relative overflow-hidden group">
+            <div className="bg-[#202f36] border-2 border-b-8 border-[#1cb0f6]/50 rounded-4xl p-4 md:p-8 mt-10 relative overflow-hidden group">
               <div className="absolute top-0 left-1/2 p-6 opacity-10 group-hover:scale-110 transition-transform text-[#1cb0f6]">
                 <Target size={128} />
               </div>

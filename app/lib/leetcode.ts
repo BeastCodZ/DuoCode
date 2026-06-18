@@ -1,6 +1,7 @@
 import * as leetcodeService from "./duocode-api/services";
 
 export interface LeetCodeProfile {
+  points: any;
   username: string;
   name: string;
   avatar: string;
@@ -64,6 +65,7 @@ export interface LeetCodeContest {
 }
 
 export interface LeetCodeBadge {
+  length: number;
   badgesCount: number;
   badges: {
     id: string;
@@ -181,7 +183,8 @@ export async function getDailyQuestion(): Promise<LeetCodeDaily> {
 
 export async function getFullUser(
   username: string
-): Promise<FullUserData> {
+): Promise<FullUserData | null> {
+  try{
   const [
     profile,
     solved,
@@ -202,6 +205,7 @@ export async function getFullUser(
     leetcodeService.getLanguageStats(username).catch(() => ({ matchedUser: { languageProblemCount: [] } } as never)),
   ]);
 
+
   // Map types to match LeetCodeProfile
   const mappedProfile: LeetCodeProfile = {
     username: profile.username,
@@ -211,6 +215,7 @@ export async function getFullUser(
     reputation: (profile.reputation ?? 0) as number,
     gitHub: profile.gitHub || '',
     twitter: profile.twitter || '',
+    points: (profile.points ?? 0) as number,
     linkedIn: (profile as unknown as { linkedIN?: string }).linkedIN || (profile as unknown as { linkedIn?: string }).linkedIn || '', // Handle case difference
     website: profile.website || [],
     country: profile.country || '',
@@ -265,5 +270,9 @@ export async function getFullUser(
       }
     } as unknown as LeetCodeLanguageStats,
   };
+} catch {
+  return null;
+}
+  
 }
 

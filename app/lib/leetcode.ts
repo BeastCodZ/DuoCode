@@ -1,7 +1,7 @@
 import * as leetcodeService from "./duocode-api/services";
 
 export interface LeetCodeProfile {
-  points: any;
+  points: number;
   username: string;
   name: string;
   avatar: string;
@@ -198,7 +198,7 @@ export async function getFullUser(
     leetcodeService.getUserData(username),
     leetcodeService.getSolvedProblems(username),
     leetcodeService.getCalendar(username),
-    leetcodeService.getAcSubmissions(username, 5),
+    leetcodeService.getAcSubmissions(username, 20),
     leetcodeService.getUserContest(username).catch(() => ({}) as never),
     leetcodeService.getUserBadges(username).catch(() => ({}) as never),
     leetcodeService.getSkillStats(username).catch(() => ({}) as never),

@@ -57,10 +57,37 @@ export const formatSubmissionData = (data: UserData) => ({
   submission: data.recentSubmissionList,
 });
 
-export const formatAcSubmissionData = (data: UserData) => ({
-  count: data.recentAcSubmissionList.length,
-  submission: data.recentAcSubmissionList,
-});
+export const formatAcSubmissionData = (data: UserData) => {
+  const submission = data.recentAcSubmissionList as Array<{
+    timestamp: string | number;
+    titleSlug: string;
+  }>;
+
+  // Midnight UTC (LeetCode timestamps are Unix seconds in UTC)
+  const now = new Date();
+  const startOfToday = Math.floor(
+    Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate()
+    ) / 1000
+  );
+
+  const acceptedToday = submission.filter(
+    (sub) => Number(sub.timestamp) >= startOfToday
+  );
+
+  const solvedToday = new Set(
+    acceptedToday.map((sub) => sub.titleSlug)
+  ).size;
+
+  return {
+    count: submission.length,
+    submission,
+    acceptedToday: acceptedToday.length,
+    solvedToday,
+  };
+};
 
 export const formatSubmissionCalendarData = (data: UserData) => ({
   activeYears: data.matchedUser.userCalendar.activeYears,

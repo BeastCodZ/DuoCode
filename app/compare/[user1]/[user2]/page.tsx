@@ -16,8 +16,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import BackButton from "@/components/BackButton";
-import { notFound } from "next/navigation";
 import Error from "@/components/Error";
+import { getAcSubmissions } from "@/lib/duocode-api/services";
 
 type Props = {
   params: Promise<{
@@ -90,31 +90,6 @@ function MiniProfile({
       </div>
     </div>
   );
-}
-function getSolvedToday(
-  submissions: { timestamp: string; titleSlug: string }[],
-) {
-  const now = new Date();
-
-  const todayYear = now.getUTCFullYear();
-  const todayMonth = now.getUTCMonth();
-  const todayDate = now.getUTCDate();
-
-  const solved = new Set<string>();
-
-  for (const sub of submissions) {
-    const d = new Date(Number(sub.timestamp) * 1000);
-
-    if (
-      d.getUTCFullYear() === todayYear &&
-      d.getUTCMonth() === todayMonth &&
-      d.getUTCDate() === todayDate
-    ) {
-      solved.add(sub.titleSlug);
-    }
-  }
-
-  return solved.size;
 }
 
 function calculateBadgePoints(badge: { displayName: string }) {
@@ -209,9 +184,10 @@ export default async function ComparePage({ params }: Props) {
     )
     .slice(0, 5);
 
-  const solvedTodaya = getSolvedToday(a.latestAccepted?.submission ?? []);
-
-  const solvedTodayb = getSolvedToday(b.latestAccepted?.submission ?? []);
+  
+  
+  const solvedTodaya = (await getAcSubmissions(a?.profile?.username, 20)).solvedToday;
+  const solvedTodayb = (await getAcSubmissions(b?.profile?.username, 20)).solvedToday;
 
   const userBadgesa = (a.badges?.badges || []) as { displayName: string }[];
   const userBadgesb = (b.badges?.badges || []) as { displayName: string }[];

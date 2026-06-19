@@ -31,6 +31,7 @@ import Link from "next/link";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import Image from "next/image";
 import BackButton from "@/components/BackButton";
+import { getAcSubmissions } from "@/lib/duocode-api/services";
 
 export default async function UserProfilePage({
   params,
@@ -42,36 +43,13 @@ export default async function UserProfilePage({
   const { user } = await params;
   const data = await getFullUser(user);
 
-  const submissions = data?.latestAccepted?.submission || [];
+  const submissions = (data?.latestAccepted?.submission || []).slice(-5);
 
   const heatmapValues = getLastNDays(data?.calendar.submissionCalendar, 35);
 
-  function getSolvedToday(
-    submissions: { timestamp: string; titleSlug: string }[],
-  ) {
-    const now = new Date();
-
-    const todayYear = now.getUTCFullYear();
-    const todayMonth = now.getUTCMonth();
-    const todayDate = now.getUTCDate();
-
-    const solved = new Set<string>();
-
-    for (const sub of submissions) {
-      const d = new Date(Number(sub.timestamp) * 1000);
-
-      if (
-        d.getUTCFullYear() === todayYear &&
-        d.getUTCMonth() === todayMonth &&
-        d.getUTCDate() === todayDate
-      ) {
-        solved.add(sub.titleSlug);
-      }
-    }
-
-    return solved.size;
-  }
-  const solvedToday = getSolvedToday(data?.latestAccepted?.submission ?? []);
+  const solvedToday = data?.profile?.username
+    ? (await getAcSubmissions(data.profile.username, 50)).solvedToday
+    : 0;
   const currentStreak = Math.max(
     calculateStreak(data?.calendar.submissionCalendar),
   );

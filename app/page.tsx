@@ -6,6 +6,7 @@ import { LeetCodeDaily } from "@/lib/leetcode";
 import AnimateIn from "@/components/AnimateIn";
 import { Target, User, Swords } from "lucide-react";
 import Image from "next/image";
+import { GiOpenBook } from "react-icons/gi";
 
 interface BattleHistory {
   u1: string;
@@ -240,9 +241,63 @@ export default function HomePage() {
             </div>
           </AnimateIn>
         </div>
+        <AnimateIn direction="up" delay={0.8}>
+  <div className="bg-[#202f36] border-2 border-b-8 border-[#58CC02]/50 rounded-4xl p-4 md:p-8 mt-10 relative overflow-hidden group">
+    {/* Keep the book in the same position */}
+    <div className="absolute top-0 left-1/2 p-6 opacity-10 group-hover:scale-110 transition-transform text-[#58CC02]">
+      <GiOpenBook size={128} />
+    </div>
+
+    <div className="relative z-10">
+      <h3 className="text-[#58CC02] font-black uppercase text-lg md:text-base tracking-[0.2em] mb-3">
+        Learning Path
+      </h3>
+
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
+        <div>
+          <h2 className="text-xl md:text-2xl font-black text-white group-hover:text-[#58CC02] transition-colors">
+            Striver&apos;s A2Z Roadmap
+          </h2>
+
+          <p className="mt-2 text-zinc-400 max-w-xl">
+            Follow a structured progression through curated LeetCode problems
+            and track your completion along the way.
+          </p>
+        </div>
+
+        <button
+          onClick={() => router.push("/learn")}
+          className="
+            bg-[#58CC02]
+            hover:bg-[#46a302]
+            text-white
+            font-black
+            rounded-2xl
+            px-6
+            py-3
+            text-base
+            shadow-[0_6px_0_0_#46a302]
+            hover:shadow-[0_6px_0_0_#3d8d02]
+            active:shadow-none
+            active:translate-y-1
+            transition-all
+            uppercase
+            tracking-wider
+            text-center
+            whitespace-nowrap
+            cursor-pointer
+          "
+        >
+          Start Learning
+        </button>
+      </div>
+    </div>
+  </div>
+</AnimateIn>
+          
         {/* DAILY QUEST SECTION */}
         {daily && (
-          <AnimateIn direction="up" delay={0.3}>
+          <AnimateIn direction="up" delay={1}>
             <div className="bg-[#202f36] border-2 border-b-8 border-[#1cb0f6]/50 rounded-4xl p-4 md:p-8 mt-10 relative overflow-hidden group">
               <div className="absolute top-0 left-1/2 p-6 opacity-10 group-hover:scale-110 transition-transform text-[#1cb0f6]">
                 <Target size={128} />

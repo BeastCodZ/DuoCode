@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { LeetCodeDaily } from "@/lib/leetcode";
+import { LeetCodeDaily } from "@/types/types";
 import AnimateIn from "@/components/AnimateIn";
 import { Target, User, Swords } from "lucide-react";
 import Image from "next/image";
@@ -83,6 +83,27 @@ export default function HomePage() {
       router.push(`/compare/${user1}/${user2}`);
     }
   };
+
+  const dailySkeleton = (
+    <div className="bg-[#202f36] border-2 border-b-8 border-[#1cb0f6]/50 rounded-4xl p-4 md:p-8 mt-10 relative overflow-hidden animate-pulse shadow-[0_6px_0_0_#168dc3]">
+      <div className="absolute top-0 left-1/2 p-6 opacity-10 text-[#1cb0f6]">
+        <Target size={128} />
+      </div>
+      <div className="relative z-10">
+        <div className="h-4 w-32 rounded-full bg-[#1b272c] border border-[#37464f] mb-4" />
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
+          <div className="space-y-3">
+            <div className="h-7 w-72 max-w-full rounded-2xl bg-[#131f24] border-2 border-[#37464f]" />
+            <div className="flex gap-2">
+              <div className="h-8 w-24 rounded-xl bg-[#1cb0f6]/20 border-2 border-[#1cb0f6]/30" />
+              <div className="h-8 w-24 rounded-xl bg-[#1b272c] border-2 border-[#37464f]" />
+            </div>
+          </div>
+          <div className="h-12 w-36 rounded-2xl bg-[#1cb0f6]/20 border-2 border-[#1cb0f6]/30" />
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <main className="min-h-screen bg-[#131f24] text-white flex items-center justify-center px-4 font-sans py-10 overflow-hidden">
@@ -241,7 +262,7 @@ export default function HomePage() {
             </div>
           </AnimateIn>
         </div>
-        <AnimateIn direction="up" delay={0.8}>
+        <AnimateIn direction="up" delay={0.7}>
   <div className="bg-[#202f36] border-2 border-b-8 border-[#58CC02]/50 rounded-4xl p-4 md:p-8 mt-10 relative overflow-hidden group">
     {/* Keep the book in the same position */}
     <div className="absolute top-0 left-1/2 p-6 opacity-10 group-hover:scale-110 transition-transform text-[#58CC02]">
@@ -296,8 +317,8 @@ export default function HomePage() {
 </AnimateIn>
           
         {/* DAILY QUEST SECTION */}
-        {daily && (
-          <AnimateIn direction="up" delay={1}>
+        <AnimateIn direction="up" delay={0.8}>
+          {daily ? (
             <div className="bg-[#202f36] border-2 border-b-8 border-[#1cb0f6]/50 rounded-4xl p-4 md:p-8 mt-10 relative overflow-hidden group">
               <div className="absolute top-0 left-1/2 p-6 opacity-10 group-hover:scale-110 transition-transform text-[#1cb0f6]">
                 <Target size={128} />
@@ -339,8 +360,10 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-          </AnimateIn>
-        )}
+          ) : (
+            dailySkeleton
+          )}
+        </AnimateIn>
       </div>
     </main>
   );

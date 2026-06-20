@@ -1,4 +1,4 @@
-import { getFullUser, FullUserData } from "@/lib/leetcode";
+import { getFullUser } from "@/lib/leetcode";
 import BattleRow from "@/components/BattleRow";
 import { calculateStreak } from "@/lib/calender";
 import AnimateIn from "@/components/AnimateIn";
@@ -17,7 +17,8 @@ import {
 import Link from "next/link";
 import BackButton from "@/components/BackButton";
 import Error from "@/components/Error";
-import { getAcSubmissions } from "@/lib/duocode-api/services";
+import type { FullUserData } from "@/types/types";
+import { getAcSubmissions } from "@/lib/leetcode";
 
 type Props = {
   params: Promise<{
@@ -25,6 +26,7 @@ type Props = {
     user2: string;
   }>;
 };
+
 
 function MiniProfile({
   user,
@@ -63,9 +65,8 @@ function MiniProfile({
       <div className="text-center">
         <Link href={`/u/${user.profile.username}`}>
           <h2
-            className={`text-xl md:text-2xl font-black transition-colors ${
-              winner ? "text-[#ffc800]" : "text-white hover:text-[#58cc02]"
-            }`}
+            className={`text-xl md:text-2xl font-black transition-colors ${winner ? "text-[#ffc800]" : "text-white hover:text-[#58cc02]"
+              }`}
           >
             {user.profile.username}
           </h2>
@@ -114,21 +115,19 @@ function calculateBadgePoints(badge: { displayName: string }) {
 
 export default async function ComparePage({ params }: Props) {
   const { user1, user2 } = await params;
-  const [a, b] = await Promise.all([getFullUser(user1), getFullUser(user2)]);
-  if (!a?.profile?.username) {
-    return (
-      <Error error="user-not-found" username={user1} />
-    );
+const [a, b] = await Promise.all([
+  getFullUser(user1),
+  getFullUser(user2),
+]);
+  
+  if (!a?.profile) {
+    return <Error error="user-not-found" username={user1} />;
   }
-  if (!b?.profile?.username) {
-    return (
-      <Error error="user-not-found" username={user2} />
-    );
+  if (!b?.profile) {
+    return <Error error="user-not-found" username={user2} />;
   }
-  if (a.profile.username == b.profile.username) {
-    return (
-      <Error error="custom" text="Users cannot compare against themselves." />
-    );
+  if (a.profile.username === b.profile.username) {
+    return <Error error="custom" text="Users cannot compare against themselves." />;
   }
 
   const getAcceptanceRate = (data: FullUserData) => {
@@ -184,19 +183,19 @@ export default async function ComparePage({ params }: Props) {
     )
     .slice(0, 5);
 
-  
-  
+
+
   const solvedTodaya = (await getAcSubmissions(a?.profile?.username, 20)).solvedToday;
   const solvedTodayb = (await getAcSubmissions(b?.profile?.username, 20)).solvedToday;
 
-  const userBadgesa = (a.badges?.badges || []) as { displayName: string }[];
-  const userBadgesb = (b.badges?.badges || []) as { displayName: string }[];
+  const userBadgesa = a.badges?.badges ?? [];
+  const userBadgesb = b.badges?.badges ?? [];
   const totalPointsa = userBadgesa.reduce(
-    (sum: number, badge) => sum + calculateBadgePoints(badge),
+    (sum: number, badge: { displayName: string; }) => sum + calculateBadgePoints(badge),
     0,
   );
   const totalPointsb = userBadgesb.reduce(
-    (sum: number, badge) => sum + calculateBadgePoints(badge),
+    (sum: number, badge: { displayName: string; }) => sum + calculateBadgePoints(badge),
     0,
   );
   const aPoints =
@@ -211,8 +210,40 @@ export default async function ComparePage({ params }: Props) {
     b.solved.hardSolved * 15 +
     calculateStreak(b.calendar.submissionCalendar) +
     totalPointsb;
+  let winner: string | null;
 
-  const winner = aPoints > bPoints ? a.profile.username : b.profile.username;
+if (aPoints !== bPoints) {
+  winner =
+    aPoints > bPoints
+      ? a.profile.username
+      : b.profile.username;
+} else {
+  const aTieBreaker =
+    a.solved.mediumSolved +
+    a.solved.hardSolved * 2;
+
+  const bTieBreaker =
+    b.solved.mediumSolved +
+    b.solved.hardSolved * 2;
+
+  if (aTieBreaker !== bTieBreaker) {
+    winner =
+      aTieBreaker > bTieBreaker
+        ? a.profile.username
+        : b.profile.username;
+  } else if (
+    a.solved.solvedProblem !==
+    b.solved.solvedProblem
+  ) {
+    winner =
+      a.solved.solvedProblem >
+      b.solved.solvedProblem
+        ? a.profile.username
+        : b.profile.username;
+  } else {
+    winner = null;
+  }
+}
 
   return (
     <main className="min-h-screen bg-[#131f24] text-white p-4 overflow-hidden">
@@ -251,19 +282,19 @@ export default async function ComparePage({ params }: Props) {
                   className="w-20 md:w-32 opacity-90"
                 />
                 <div className="bg-[#46a500] opacity-80 text-white px-2 md:px-6 py-1 md:py-2 rounded-2xl font-black text-[0.7rem] md:text-base shadow-[0_2px_0_0_#3b5200] transform -rotate-2 hover:rotate-0 transition-transform cursor-default flex flex-col items-center">
-                  <span>WINNER:</span> <span>{winner.toUpperCase()}</span>
+                  <span>WINNER:</span> <span>{winner?.toUpperCase() || "DRAW"}</span>
                 </div>
               </AnimateIn>
             </div>
             <MiniProfile
               user={a}
-              winner={a.profile.username === winner}
+              winner={a.profile.username === winner || winner === "Draw"}
               points={aPoints}
             />
 
             <MiniProfile
               user={b}
-              winner={b.profile.username === winner}
+              winner={b.profile.username === winner || winner === "Draw"}
               points={bPoints}
             />
           </div>
@@ -389,22 +420,22 @@ export default async function ComparePage({ params }: Props) {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <BattleRow
                   label="Reputation"
-                  user1Value={a.community.reputation}
-                  user2Value={b.community.reputation}
+                  user1Value={a.community?.reputation}
+                  user2Value={b.community?.reputation}
                   icon={<Handshake size={16} stroke="#007acc" />}
                   color="blue"
                 />
                 <BattleRow
                   label="Discuss Posts"
-                  user1Value={a.community.postCount}
-                  user2Value={b.community.postCount}
+                  user1Value={a.community?.postCount}
+                  user2Value={b.community?.postCount}
                   icon={<MessageSquare size={16} stroke="yellow" />}
                   color="yellow"
                 />
                 <BattleRow
                   label="Solutions Shared"
-                  user1Value={a.community.solutionCount}
-                  user2Value={b.community.solutionCount}
+                  user1Value={a.community?.solutionCount}
+                  user2Value={b.community?.solutionCount}
                   icon={<Lightbulb size={16} stroke="#46a500" />}
                   color="green"
                 />
@@ -412,47 +443,6 @@ export default async function ComparePage({ params }: Props) {
             </div>
           </AnimateIn>
         </div>
-
-        {/* BADGE BATTLE */}
-        {/* <AnimateIn direction="up" delay={0.8}>
-            <div className="bg-[#202f36] border-2 border-b-4 border-[#37464f] rounded-[32px] p-8 md:p-12">
-                <h3 className="text-2xl font-black mb-8 text-center flex items-center justify-center gap-3">
-                    <span className="bg-[#ffc800] p-2.5 rounded-2xl text-white">
-                        <Medal size={24} />
-                    </span>
-                    Badge Collection
-                </h3>
-                <div className="flex flex-row gap-8 items-center">
-                    <div>
-                        <div className="flex flex-wrap gap-3 justify-center">
-                            {a.badges.badges?.slice(0, 8).map((badge) => (
-                                <BadgeIcon key={badge.id} name={badge.displayName} icon={badge.icon} />
-                            ))}
-                        </div>
-                        <div className="text-center mt-5">
-                            <span className="bg-zinc-800 text-zinc-400 font-black px-3 py-1 rounded-xl text-xs border-2 border-zinc-700 uppercase tracking-widest">
-                                {a.badges.badgesCount} Badges
-                            </span>
-                        </div>
-                    </div>
-
-                    <div className="hidden md:block w-px h-24 bg-zinc-700/50" />
-
-                    <div>
-                        <div className="flex flex-wrap gap-3 justify-center">
-                            {b.badges.badges?.slice(0, 8).map((badge) => (
-                                <BadgeIcon key={badge.id} name={badge.displayName} icon={badge.icon} />
-                            ))}
-                        </div>
-                        <div className="text-center mt-5">
-                            <span className="bg-zinc-800 text-zinc-400 font-black px-3 py-1 rounded-xl text-xs border-2 border-zinc-700 uppercase tracking-widest">
-                                {b.badges.badgesCount} Badges
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </AnimateIn> */}
       </div>
     </main>
   );

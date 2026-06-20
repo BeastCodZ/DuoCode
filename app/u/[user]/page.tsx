@@ -31,7 +31,8 @@ import Link from "next/link";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import Image from "next/image";
 import BackButton from "@/components/BackButton";
-import { getAcSubmissions } from "@/lib/duocode-api/services";
+import { FullUserData } from "@/types/types";
+import { getAcSubmissions } from "@/lib/leetcode";
 
 export default async function UserProfilePage({
   params,
@@ -41,7 +42,9 @@ export default async function UserProfilePage({
   }>;
 }) {
   const { user } = await params;
-  const data = await getFullUser(user);
+  const [data] = (await Promise.all([
+    getFullUser(user),
+  ])) as [FullUserData];
 
   const submissions = (data?.latestAccepted?.submission || []).slice(-5);
 
@@ -142,7 +145,7 @@ export default async function UserProfilePage({
     }
     return 10;
   }
-  const userBadgesa = (data?.badges?.badges || []) as { displayName: string }[];
+  const userBadgesa = data?.badges?.badges ?? [];
   const totalPointsa = userBadgesa.reduce(
     (sum: number, badge) => sum + calculateBadgePoints(badge),
     0,
@@ -470,7 +473,7 @@ export default async function UserProfilePage({
                     Last 35 days
                   </span>
                 </div>
-                <div className="flex justify-center">
+                <div className="flex justify-center md:justify-start">
                   <div className="bg-[#0b1418] p-6 rounded-3xl border-2 border-[#37464f]">
                     <Heatmap values={heatmapValues} />
                   </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const nunito = Nunito({
@@ -48,6 +49,7 @@ export default function RootLayout({
       <body className={`${nunito.className} ${nunito.variable} min-h-full font-sans`}>
         {children}
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );

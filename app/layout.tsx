@@ -15,6 +15,7 @@ export const metadata: Metadata = {
   description: "LeetCode. Every developer starts here. Not every developer is seen again. The last person who forgot their streak disappeared under mysterious circumstances. We found his keyboard. Nothing else. Maintain your streak. Ignore the scratching behind the Medium questions. Programa o desaparece. The Owl sends his regards.",
   keywords: ["LeetCode", "coding", "gamified", "competition", "stats", "friends", "DuoCode", "BeastCodZ"],
   authors: [{ name: "BeastCodZ" }],
+  referrer: "strict-origin-when-cross-origin",
   openGraph: {
     title: "DuoCode | Duolingo for LeetCode",
     description: "LeetCode. Every developer starts here. Not every developer is seen again. The last person who forgot their streak disappeared under mysterious circumstances. We found his keyboard. Nothing else. Maintain your streak. Ignore the scratching behind the Medium questions. Programa o desaparece. The Owl sends his regards.",

@@ -46,7 +46,7 @@ export default async function UserProfilePage({
     getFullUser(user),
   ])) as [FullUserData];
 
-  const submissions = (data?.latestAccepted?.submission || []).slice(-5);
+  const submissions = (data?.latestAccepted?.submission || []).slice(0, 8);
 
   const heatmapValues = getLastNDays(data?.calendar.submissionCalendar, 35);
 

@@ -263,21 +263,24 @@ export default function HomePage() {
           </AnimateIn>
         </div>
         <AnimateIn direction="up" delay={0.7}>
-  <div className="bg-[#202f36] border-2 border-b-8 border-[#58CC02]/50 rounded-4xl p-4 md:p-8 mt-10 relative overflow-hidden group">
+  <div className="bg-[#36202a] border-2 border-b-8 border-[#cc0278]/50 rounded-4xl p-4 md:p-8 mt-10 relative overflow-hidden group">
     {/* Keep the book in the same position */}
-    <div className="absolute top-0 left-1/2 p-6 opacity-10 group-hover:scale-110 transition-transform text-[#58CC02]">
+    <div className="absolute top-0 left-1/2 p-6 opacity-10 group-hover:scale-110 transition-transform text-[#cc0278]">
       <GiOpenBook size={128} />
     </div>
 
     <div className="relative z-10">
-      <h3 className="text-[#58CC02] font-black uppercase text-lg md:text-base tracking-[0.2em] mb-3">
+      <h3 className="text-[#cf6da6] font-black uppercase text-lg md:text-base tracking-[0.2em] mb-3">
         Learning Path
       </h3>
 
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
         <div>
-          <h2 className="text-xl md:text-2xl font-black text-white group-hover:text-[#58CC02] transition-colors">
+          <h2 className="text-xl md:text-2xl font-black text-neutral-400 group-hover:text-[#cc0278] transition-colors line-through">
             Striver&apos;s A2Z Roadmap
+          </h2>
+          <h2 className="text-xl md:text-2xl font-black text-white group-hover:text-[#cf6da6] transition-colors">
+            NeetCode 150
           </h2>
 
           <p className="mt-2 text-zinc-400 max-w-xl">
@@ -287,16 +290,19 @@ export default function HomePage() {
         </div>
 
         <button
-          onClick={() => router.push("/learn")}
+          onClick={() => router.push("/")}
+          disabled
           className="
             bg-[#58CC02]
             hover:bg-[#46a302]
             text-white
             font-black
+            disabled:bg-neutral-400
             rounded-2xl
             px-6
             py-3
             text-base
+            disabled:shadow-none
             shadow-[0_6px_0_0_#46a302]
             hover:shadow-[0_6px_0_0_#3d8d02]
             active:shadow-none
@@ -309,7 +315,7 @@ export default function HomePage() {
             cursor-pointer
           "
         >
-          Start Learning
+          Coming Soon
         </button>
       </div>
     </div>

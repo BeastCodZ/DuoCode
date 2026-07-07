@@ -66,8 +66,8 @@ const BattleRow: React.FC<BattleRowProps> = ({
           style={{ width: `${user2Percentage}%`}}
         />
         
-        {/* If user 2 is winning, we show the fire on their edge of the common boundary */}
-        {/* Render a semi-transparent/opaque filled area for user2 (on top) */}
+        
+        
         {v2 >= 0 && (
           <div
             className={`absolute right-0 top-0 h-full ${selectedColor.fill} transition-all duration-1000 ease-out`}

@@ -1,4 +1,3 @@
-// app/error.tsx
 "use client";
 
 import Error from "@/components/Error";

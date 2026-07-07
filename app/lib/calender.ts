@@ -57,12 +57,9 @@ export function getLastNDays(
       
       const timestamp = Math.floor(date.getTime() / 1000);
       
-      // LeetCode API timestamps can be slightly off due to timezone shifts
-      // We check the exact timestamp and also ± 12 hours just in case
       let count = calendar[timestamp] || calendar[timestamp.toString()] || 0;
       
       if (!count) {
-          // Try fuzzy matching within a 12 hour window if exact match fails
           const keys = Object.keys(calendar);
           const fuzzyMatch = keys.find(k => {
               const kt = parseInt(k);
@@ -96,7 +93,6 @@ export function calculateStreak(
 
     const now = new Date();
 
-    // Today's UTC midnight
     let day =
       Date.UTC(
         now.getUTCFullYear(),
@@ -104,7 +100,6 @@ export function calculateStreak(
         now.getUTCDate()
       ) / 1000;
 
-    // If no solve today, allow streak to start from yesterday
     if (!daySet.has(day)) {
       day -= 86400;
     }

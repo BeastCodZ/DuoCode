@@ -57,7 +57,6 @@ export default async function UserProfilePage({
     calculateStreak(data?.calendar.submissionCalendar),
   );
 
-  // Logic for League (Duolingo style)
   const solvedCount = data?.solved.solvedProblem;
   const leagues = {
     diamond: {
@@ -100,7 +99,6 @@ export default async function UserProfilePage({
               : leagues.bronze
       : leagues.bronze;
 
-  // Acceptance Rate calculation
   const totalSub =
     data?.solved.totalSubmissionNum.find((s) => s.difficulty === "All")
       ?.submissions || 1;
@@ -108,19 +106,16 @@ export default async function UserProfilePage({
     data?.solved.acSubmissionNum.find((s) => s.difficulty === "All")?.count || 0;
   const acceptanceRate = ((acSub / totalSub) * 100).toFixed(1);
 
-  // Skill stats preparation
   const easyTotal = 949;
   const mediumTotal = 2067;
   const hardTotal = 942;
 
-  // Get top skills from tagProblemCounts
   const allSkills = [
     ...(data?.skillStats?.tagProblemCounts?.fundamental || []),
     ...(data?.skillStats?.tagProblemCounts?.intermediate || []),
     ...(data?.skillStats?.tagProblemCounts?.advanced || []),
   ].sort((a, b) => b.problemsSolved - a.problemsSolved);
 
-  // Recent Contests
   const recentContests =
     data?.contests.contestHistory
       ?.filter((c) => c.attended)
@@ -160,7 +155,7 @@ export default async function UserProfilePage({
     <main className="min-h-screen bg-[#131f24] text-white p-4 overflow-hidden">
       <BackButton />
       <div className="max-w-5xl mx-auto space-y-4">
-        {/* HEADER SECTION */}
+        
         <AnimateIn direction="down" delay={0.1}>
           <div className="flex flex-col items-center">
             <Link href="/">
@@ -240,7 +235,7 @@ export default async function UserProfilePage({
                   </p>
                 )}
 
-                {/* Social Links */}
+                
                 <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-6">
                   {data?.profile.gitHub && (
                     <a
@@ -287,7 +282,7 @@ export default async function UserProfilePage({
           </div>
         </AnimateIn>
 
-        {/* STATS GRID */}
+        
         <AnimateIn direction="scale" delay={0.2}>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             <StatCard
@@ -348,9 +343,9 @@ export default async function UserProfilePage({
         </AnimateIn>
 
         <div className="grid lg:grid-cols-[1.5fr_1fr] gap-8">
-          {/* LEFT COLUMN */}
+          
           <div className="space-y-8">
-            {/* DIFFICULTY BREAKDOWN */}
+            
             <AnimateIn direction="left" delay={0.3}>
               <div className="bg-[#202f36] border-2 border-b-4 border-[#37464f] rounded-4xl p-6 md:p-8">
                 <h3 className="text-2xl font-black mb-8 flex items-center gap-3">
@@ -382,7 +377,7 @@ export default async function UserProfilePage({
               </div>
             </AnimateIn>
 
-            {/* CONTEST TRENDS */}
+            
             {recentContests.length > 0 && (
               <AnimateIn direction="left" delay={0.4}>
                 <div className="bg-[#202f36] border-2 border-b-4 border-[#37464f] rounded-4xl p-6 md:p-8">
@@ -429,7 +424,7 @@ export default async function UserProfilePage({
               </AnimateIn>
             )}
 
-            {/* TOP SKILLS */}
+            
             {allSkills.length > 0 && (
               <AnimateIn direction="left" delay={0.5}>
                 <div className="bg-[#202f36] border-2 border-b-4 border-[#37464f] rounded-4xl p-6 md:p-8">
@@ -459,7 +454,7 @@ export default async function UserProfilePage({
               </AnimateIn>
             )}
 
-            {/* HEATMAP */}
+            
             <AnimateIn direction="left" delay={0.6}>
               <div className="bg-[#202f36] border-2 border-b-4 border-[#37464f] rounded-4xl p-6 md:p-8">
                 <div className="flex justify-between items-center mb-8">
@@ -482,9 +477,9 @@ export default async function UserProfilePage({
             </AnimateIn>
           </div>
 
-          {/* RIGHT COLUMN */}
+          
           <div className="space-y-8">
-            {/* RECENT ACTIVITY */}
+            
             {submissions.length > 0 && (
               <AnimateIn direction="right" delay={0.4}>
                 <div className="bg-[#202f36] border-2 border-b-4 border-[#37464f] rounded-4xl p-6 md:p-8">
@@ -526,7 +521,7 @@ export default async function UserProfilePage({
               </AnimateIn>
             )}
 
-            {/* COMMUNITY CARD */}
+            
             <AnimateIn direction="right" delay={0.5}>
               <div className="bg-[#202f36] border-2 border-b-4 border-[#37464f] rounded-4xl p-6 md:p-8">
                 <h3 className="text-zinc-500 font-bold uppercase text-[10px] tracking-widest mb-5">

@@ -5,10 +5,10 @@ export default function Loading() {
   return (
     <main className="min-h-screen bg-[#131f24] text-white p-4">
       <div className="mx-auto max-w-4xl animate-pulse">
-        {/* Real Back Button */}
+        
         <BackButton />
 
-        {/* Real DuoCode Logo */}
+        
         <div className="my-4 flex justify-center">
           <Image
             src="/banner.webp" // or "/duocode.webp" depending on what you use
@@ -20,7 +20,7 @@ export default function Loading() {
           />
         </div>
 
-        {/* Header */}
+        
         <div className="mb-5 rounded-[40px] border-2 border-b-8 border-[#37464f] bg-[#202f36] p-8">
           <div className="flex gap-6">
             <div className="h-32 w-32 shrink-0 rounded-full border-4 border-[#58cc02]/30 bg-[#131f24]" />
@@ -44,7 +44,7 @@ export default function Loading() {
           </div>
         </div>
 
-        {/* 6 Stats */}
+        
         <div className="grid grid-cols-3 gap-4 mb-4">
           {Array.from({ length: 6 }).map((_, i) => (
             <div
@@ -58,16 +58,16 @@ export default function Loading() {
           ))}
         </div>
 
-        {/* Lower grid */}
+        
         <div className="grid grid-cols-[1.55fr_1fr] gap-4">
-          {/* Left */}
+          
           <div className="space-y-4">
             <div className="h-48 rounded-3xl border-2 border-b-8 border-[#37464f] bg-[#202f36]" />
             <div className="h-64 rounded-3xl border-2 border-b-8 border-[#37464f] bg-[#202f36]" />
             <div className="h-48 rounded-3xl border-2 border-b-8 border-[#37464f] bg-[#202f36]" />
           </div>
 
-          {/* Right */}
+          
           <div className="space-y-4">
             <div className="h-[22rem] rounded-3xl border-2 border-b-8 border-[#37464f] bg-[#202f36]" />
 

@@ -7,8 +7,6 @@ export default function BackButton() {
   const router = useRouter();
 
   function handleBack() {
-    // If the user has history, go back.
-    // Otherwise, send them home.
     if (window.history.length > 1) {
       router.back();
     } else {
@@ -31,26 +29,25 @@ export default function BackButton() {
 
         rounded-2xl
         border-2
-        border-b-4
-        border-[#37464f]
+        border-[#333333]
 
-        bg-[#202f36]
+        bg-transparent
+        backdrop-blur-sm
 
         px-4
         py-2
 
         font-bold
-        text-zinc-200
+        text-zinc-400
 
         transition-all
         duration-150
 
         hover:-translate-y-0.5
-        hover:border-[#58CC02]
+        hover:border-white
         hover:text-white
 
         active:translate-y-0.5
-        active:border-b-2
       "
       aria-label="Go back"
     >

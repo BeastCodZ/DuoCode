@@ -4,9 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { LeetCodeDaily } from "@/types/types";
 import AnimateIn from "@/components/AnimateIn";
-import { Target, User, Swords } from "lucide-react";
+import { Target, User, Swords, RocketIcon } from "lucide-react";
 import Image from "next/image";
-import { GiOpenBook } from "react-icons/gi";
 
 interface BattleHistory {
   u1: string;
@@ -20,7 +19,6 @@ export default function HomePage() {
   const [user2, setUser2] = useState("");
   const [daily, setDaily] = useState<LeetCodeDaily | null>(null);
 
-  // Use a initializer function for state to avoid useEffect lint issues with localStorage
   const [recentUsers, setRecentUsers] = useState<string[]>([]);
   const [recentBattles, setRecentBattles] = useState<BattleHistory[]>([]);
 
@@ -30,7 +28,6 @@ export default function HomePage() {
       .then(setDaily)
       .catch(console.error);
 
-    // Load history from localStorage
     const savedUsers = localStorage.getItem("recentUsers");
     if (savedUsers) {
       setRecentUsers(JSON.parse(savedUsers));
@@ -53,7 +50,6 @@ export default function HomePage() {
 
   const saveBattle = (u1: string, u2: string) => {
     if (!u1 || !u2) return;
-    // Normalize battle key to avoid duplicates like (a,b) and (b,a)
     const sorted = [u1, u2].sort();
     const newBattle = { u1: sorted[0], u2: sorted[1] };
 
@@ -137,174 +133,180 @@ export default function HomePage() {
         </AnimateIn>
 
         <div className="grid md:grid-cols-2 gap-8">
-          {/* PROFILE CARD */}
+          
           <AnimateIn direction="left" delay={0.4} className="h-full">
             <div className="h-full bg-[#202f36] rounded-4xl p-6 border-2 border-b-8 border-[#37464f] transition-transform hover:-translate-y-1">
-            <div>
-              <h2 className="text-2xl font-black mb-6 flex items-center gap-3">
-                <span className="bg-[#1cb0f6] p-2 rounded-2xl text-white">
-                  <User size={24} />
-                </span>
-                View Profile
-              </h2>
-              <div className="space-y-3 mt-auto">
-                <input
-                  value={profileUser}
-                  onChange={(e) => setProfileUser(e.target.value)}
-                  maxLength={40}
-                  placeholder="LeetCode Username"
-                  className="w-full bg-[#131f24] border-2 border-[#37464f] rounded-2xl px-4 py-3 outline-none focus:border-[#58cc02] font-bold transition-colors text-white"
-                  onKeyDown={(e) => e.key === "Enter" && handleProfileSubmit()}
-                />
-                <button
-                  onClick={handleProfileSubmit}
-                  className="w-full bg-[#58cc02] hover:bg-[#46a302] text-white font-black rounded-2xl py-3 text-lg shadow-[0_4px_0_0_#46a302] active:shadow-none active:translate-y-1 transition-all uppercase tracking-wider disabled:opacity-50 disabled:active:translate-y-0 disabled:shadow-none"
-                  disabled={!profileUser}
-                  
-                >
-                  Go
-                </button>
-              </div>
-              {/* HISTORY SECTION */}
-              {(recentUsers.length > 0 || recentBattles.length > 0) && (
-                <AnimateIn direction="scale" delay={0.2} className="space-y-6">
-                  {/* Recent Individual Profiles */}
-                  {recentUsers.length > 0 && (
-                    <div className="flex flex-wrap justify-center gap-2 p-4">
-                      {recentUsers.map((user) => (
-                        <button
-                          key={user}
-                          onClick={() => router.push(`/u/${user}`)}
-                          className="bg-[#202f36] border-2 border-b-4 border-[#37464f] hover:border-[#1cb0f6] px-3 py-1.5 rounded-2xl font-bold text-sm text-zinc-300 transition-all hover:-translate-y-1 active:translate-y-0 active:border-b-2"
-                        >
-                          {user}
-                        </button>
-                      ))}
-                      <button 
-                    onClick={() => {
-                      setRecentUsers([]);
-                      localStorage.removeItem("recentUsers");
-                    }}
-                    className="bg-[#202f36] border-2 border-b-4 border-[#ce82ff]/50 hover:border-[#ce82ff] px-4 py-2 rounded-2xl font-bold text-sm text-[#ce82ff] transition-all hover:-translate-y-1 active:translate-y-0 active:border-b-2 flex items-center gap-2"
+              <div>
+                <h2 className="text-2xl font-black mb-6 flex items-center gap-3">
+                  <span className="bg-[#1cb0f6] p-2 rounded-2xl text-white">
+                    <User size={24} />
+                  </span>
+                  View Profile
+                </h2>
+                <div className="space-y-3 mt-auto">
+                  <input
+                    value={profileUser}
+                    onChange={(e) => setProfileUser(e.target.value)}
+                    maxLength={40}
+                    placeholder="LeetCode Username"
+                    className="w-full bg-[#131f24] border-2 border-[#37464f] rounded-2xl px-4 py-3 outline-none focus:border-[#58cc02] font-bold transition-colors text-white"
+                    onKeyDown={(e) =>
+                      e.key === "Enter" && handleProfileSubmit()
+                    }
+                  />
+                  <button
+                    onClick={handleProfileSubmit}
+                    className="w-full bg-[#58cc02] hover:bg-[#46a302] text-white font-black rounded-2xl py-3 text-lg shadow-[0_4px_0_0_#46a302] active:shadow-none active:translate-y-1 transition-all uppercase tracking-wider disabled:opacity-50 disabled:active:translate-y-0 disabled:shadow-none"
+                    disabled={!profileUser}
                   >
-                    Clear List
+                    Go
                   </button>
-                    </div>
-                  )}
-                </AnimateIn>
-              )}
-            </div>
+                </div>
+                
+                {(recentUsers.length > 0 || recentBattles.length > 0) && (
+                  <AnimateIn
+                    direction="scale"
+                    delay={0.2}
+                    className="space-y-6"
+                  >
+                    
+                    {recentUsers.length > 0 && (
+                      <div className="flex flex-wrap justify-center gap-2 p-4">
+                        {recentUsers.map((user) => (
+                          <button
+                            key={user}
+                            onClick={() => router.push(`/u/${user}`)}
+                            className="bg-[#202f36] border-2 border-b-4 border-[#37464f] hover:border-[#1cb0f6] px-3 py-1.5 rounded-2xl font-bold text-sm text-zinc-300 transition-all hover:-translate-y-1 active:translate-y-0 active:border-b-2"
+                          >
+                            {user}
+                          </button>
+                        ))}
+                        <button
+                          onClick={() => {
+                            setRecentUsers([]);
+                            localStorage.removeItem("recentUsers");
+                          }}
+                          className="bg-[#202f36] border-2 border-b-4 border-[#ce82ff]/50 hover:border-[#ce82ff] px-4 py-2 rounded-2xl font-bold text-sm text-[#ce82ff] transition-all hover:-translate-y-1 active:translate-y-0 active:border-b-2 flex items-center gap-2"
+                        >
+                          Clear List
+                        </button>
+                      </div>
+                    )}
+                  </AnimateIn>
+                )}
+              </div>
             </div>
           </AnimateIn>
 
-          {/* COMPARE CARD */}
+          
           <AnimateIn direction="right" delay={0.5} className="h-full">
             <div className="h-full bg-[#202f36] rounded-4xl p-6 border-2 border-b-8 border-[#37464f] transition-transform hover:-translate-y-1 grid">
               <div>
-              <h2 className="text-2xl font-black mb-6 flex items-center gap-3">
-                <span className="bg-[#ce82ff] p-2 rounded-2xl text-white">
-                  <Swords size={24} />
-                </span>
-                Compare
-              </h2>
-              <div className="space-y-3 mt-auto">
-                <input
-                  value={user1}
-                  maxLength={40}
-                  onChange={(e) => setUser1(e.target.value)}
-                  placeholder="First User"
-                  className="w-full bg-[#131f24] border-2 border-[#37464f] rounded-2xl px-4 py-3 outline-none focus:border-[#ce82ff] font-bold transition-colors text-white"
-                />
-                <input
-                  value={user2}
-                  onChange={(e) => setUser2(e.target.value)}
-                  maxLength={40}
-                  placeholder="Second User"
-                  className="w-full bg-[#131f24] border-2 border-[#37464f] rounded-2xl px-4 py-3 outline-none focus:border-[#ce82ff] font-bold transition-colors text-white"
-                  onKeyDown={(e) => e.key === "Enter" && handleBattleSubmit()}
-                />
-                <button
-                  onClick={handleBattleSubmit}
-                  type="button"
-                  className="w-full bg-[#ce82ff] hover:bg-[#a568cc] text-white font-black rounded-2xl py-3 text-lg shadow-[0_4px_0_0_#a568cc] active:shadow-none active:translate-y-1 transition-all uppercase tracking-wider disabled:opacity-50 disabled:active:translate-y-0 disabled:shadow-none"
-                  disabled={!user1 || !user2}
-                >
-                  Battle
-                </button>
-              </div>
-              {/* Recent Battles */}
-              {recentBattles.length > 0 && (
-                <div className="flex flex-wrap justify-center gap-2 p-4">
-                  {recentBattles.map((b, i) => (
+                <h2 className="text-2xl font-black mb-6 flex items-center gap-3">
+                  <span className="bg-[#ce82ff] p-2 rounded-2xl text-white">
+                    <Swords size={24} />
+                  </span>
+                  Compare
+                </h2>
+                <div className="space-y-3 mt-auto">
+                  <input
+                    value={user1}
+                    maxLength={40}
+                    onChange={(e) => setUser1(e.target.value)}
+                    placeholder="First User"
+                    className="w-full bg-[#131f24] border-2 border-[#37464f] rounded-2xl px-4 py-3 outline-none focus:border-[#ce82ff] font-bold transition-colors text-white"
+                  />
+                  <input
+                    value={user2}
+                    onChange={(e) => setUser2(e.target.value)}
+                    maxLength={40}
+                    placeholder="Second User"
+                    className="w-full bg-[#131f24] border-2 border-[#37464f] rounded-2xl px-4 py-3 outline-none focus:border-[#ce82ff] font-bold transition-colors text-white"
+                    onKeyDown={(e) => e.key === "Enter" && handleBattleSubmit()}
+                  />
+                  <button
+                    onClick={handleBattleSubmit}
+                    type="button"
+                    className="w-full bg-[#ce82ff] hover:bg-[#a568cc] text-white font-black rounded-2xl py-3 text-lg shadow-[0_4px_0_0_#a568cc] active:shadow-none active:translate-y-1 transition-all uppercase tracking-wider disabled:opacity-50 disabled:active:translate-y-0 disabled:shadow-none"
+                    disabled={!user1 || !user2}
+                  >
+                    Battle
+                  </button>
+                </div>
+                
+                {recentBattles.length > 0 ? (
+                  <div className="flex flex-wrap justify-center gap-2 p-4">
+                    {recentBattles.map((b, i) => (
+                      <button
+                        key={i}
+                        onClick={() => {
+                          router.push(`/compare/${b.u1}/${b.u2}`);
+                        }}
+                        className="bg-[#202f36] border-2 border-b-4 border-[#ce82ff]/50 hover:border-[#ce82ff] px-4 py-2 rounded-2xl font-bold text-sm text-[#ce82ff] transition-all hover:-translate-y-1 active:translate-y-0 active:border-b-2 flex items-center gap-2"
+                      >
+                        {b.u1} <span className="text-zinc-600 italic">vs</span>{" "}
+                        {b.u2}
+                      </button>
+                    ))}
                     <button
-                      key={i}
                       onClick={() => {
-                        router.push(`/compare/${b.u1}/${b.u2}`);
+                        setRecentBattles([]);
+                        localStorage.removeItem("recentBattles");
                       }}
                       className="bg-[#202f36] border-2 border-b-4 border-[#ce82ff]/50 hover:border-[#ce82ff] px-4 py-2 rounded-2xl font-bold text-sm text-[#ce82ff] transition-all hover:-translate-y-1 active:translate-y-0 active:border-b-2 flex items-center gap-2"
                     >
-                      {b.u1} <span className="text-zinc-600 italic">vs</span>{" "}
-                      {b.u2}
+                      Clear List
                     </button>
-                  ))}
-                  <button 
-                    onClick={() => {
-                      setRecentBattles([]);
-                      localStorage.removeItem("recentBattles");
-                    }}
-                    className="bg-[#202f36] border-2 border-b-4 border-[#ce82ff]/50 hover:border-[#ce82ff] px-4 py-2 rounded-2xl font-bold text-sm text-[#ce82ff] transition-all hover:-translate-y-1 active:translate-y-0 active:border-b-2 flex items-center gap-2"
-                  >
-                    Clear List
-                  </button>
-                </div>
-              )}
+                  </div>
+                ) : (
+                  <div className="flex justify-center p-4">
+                    <div className="border-2 border-dashed border-[#37464f] rounded-2xl p-4 text-center w-full">
+                      <p className="text-sm font-bold text-zinc-500">
+                        No recent battles. Challenge a friend!
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </AnimateIn>
         </div>
         <AnimateIn direction="up" delay={0.7}>
-  <div className="bg-[#36202a] border-2 border-b-8 border-[#cc0278]/50 rounded-4xl p-4 md:p-8 mt-10 relative overflow-hidden group">
-    {/* Keep the book in the same position */}
-    <div className="absolute top-0 left-1/2 p-6 opacity-10 group-hover:scale-110 transition-transform text-[#cc0278]">
-      <GiOpenBook size={128} />
-    </div>
+          <div className="bg-black border-2 border-[#333333] rounded-4xl p-4 md:p-8 mt-10 relative overflow-hidden group hover:border-[#ffa116] transition-colors duration-300">
+            
+            <div className="absolute top-0 left-1/2 p-6 opacity-5 group-hover:scale-110 group-hover:opacity-10 transition-all duration-300 text-[#ffa116]">
+              <RocketIcon color="#ffa116" size={128} />
+            </div>
 
-    <div className="relative z-10">
-      <h3 className="text-[#cf6da6] font-black uppercase text-lg md:text-base tracking-[0.2em] mb-3">
-        Learning Path
-      </h3>
+            <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5">
+              <div>
+                <h3 className="text-[#ffa116] font-black uppercase text-lg md:text-base tracking-[0.2em] mb-3">
+                  Learning Path
+                </h3>
+                <h2 className="text-xl md:text-2xl font-black text-white group-hover:text-[#ffa116] transition-colors">
+                  NeetCode 250
+                </h2>
 
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
-        <div>
-          <h2 className="text-xl md:text-2xl font-black text-neutral-400 group-hover:text-[#cc0278] transition-colors line-through">
-            Striver&apos;s A2Z Roadmap
-          </h2>
-          <h2 className="text-xl md:text-2xl font-black text-white group-hover:text-[#cf6da6] transition-colors">
-            NeetCode 150
-          </h2>
+                <p className="mt-2 text-zinc-400 max-w-xl">
+                  Follow a structured progression through curated LeetCode
+                  problems and track your completion along the way.
+                </p>
+              </div>
 
-          <p className="mt-2 text-zinc-400 max-w-xl">
-            Follow a structured progression through curated LeetCode problems
-            and track your completion along the way.
-          </p>
-        </div>
-
-        <button
-          onClick={() => router.push("/")}
-          disabled
-          className="
-            bg-[#58CC02]
-            hover:bg-[#46a302]
-            text-white
+              <button
+                onClick={() => router.push("/learn")}
+                className="
+            bg-black
+            border-2
+            border-[#ffa116]
+            hover:bg-[#ffa116]/10
+            text-[#ffa116]
             font-black
-            disabled:bg-neutral-400
             rounded-2xl
             px-6
             py-3
             text-base
-            disabled:shadow-none
-            shadow-[0_6px_0_0_#46a302]
-            hover:shadow-[0_6px_0_0_#3d8d02]
+            shadow-[0_6px_0_0_#cc8111]
             active:shadow-none
             active:translate-y-1
             transition-all
@@ -314,15 +316,14 @@ export default function HomePage() {
             whitespace-nowrap
             cursor-pointer
           "
-        >
-          Coming Soon
-        </button>
-      </div>
-    </div>
-  </div>
-</AnimateIn>
-          
-        {/* DAILY QUEST SECTION */}
+              >
+                View List
+              </button>
+            </div>
+          </div>
+        </AnimateIn>
+
+        
         <AnimateIn direction="up" delay={0.8}>
           {daily ? (
             <div className="bg-[#202f36] border-2 border-b-8 border-[#1cb0f6]/50 rounded-4xl p-4 md:p-8 mt-10 relative overflow-hidden group">

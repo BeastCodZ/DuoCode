@@ -78,7 +78,7 @@ export default function PointsPage() {
               <h2 className="mb-4 text-2xl font-black">Difficulty Rewards</h2>
 
               <div className="space-y-4">
-                {/* Easy */}
+                
                 <div className="rounded-2xl bg-[#131f24] p-4">
                   <div className="flex items-center justify-between">
                     <p className="font-bold text-[#58CC02]">Easy</p>
@@ -93,7 +93,7 @@ export default function PointsPage() {
                   </p>
                 </div>
 
-                {/* Medium */}
+                
                 <div className="rounded-2xl bg-[#131f24] p-4">
                   <div className="flex items-center justify-between">
                     <p className="font-bold text-[#FFC800]">Medium</p>
@@ -108,7 +108,7 @@ export default function PointsPage() {
                   </p>
                 </div>
 
-                {/* Hard */}
+                
                 <div className="rounded-2xl bg-[#131f24] p-4">
                   <div className="flex items-center justify-between">
                     <p className="font-bold text-[#FF4B4B]">Hard</p>
@@ -131,7 +131,7 @@ export default function PointsPage() {
         <AnimateIn direction="up" delay={0.5}>
           <section className="mt-6 rounded-4xl border-2 border-b-8 border-[#1cb0f6] bg-[#202f36] p-6 md:p-8 overflow-hidden">
             <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-              {/* Text */}
+              
               <div className="flex-1">
                 <h2 className="mb-4 text-2xl font-black text-[#1cb0f6]">
                   Calculation Notes
@@ -161,7 +161,7 @@ export default function PointsPage() {
                 </div>
               </div>
 
-              {/* GIF */}
+              
               <div className="shrink-0">
                 <Image
                   src="/workout.gif"

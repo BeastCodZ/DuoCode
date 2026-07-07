@@ -63,7 +63,6 @@ export const formatAcSubmissionData = (data: UserData) => {
     titleSlug: string;
   }>;
 
-  // Midnight UTC (LeetCode timestamps are Unix seconds in UTC)
   const now = new Date();
   const startOfToday = Math.floor(
     Date.UTC(

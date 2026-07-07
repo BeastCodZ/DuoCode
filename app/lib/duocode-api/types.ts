@@ -1,4 +1,3 @@
-// User Data
 interface UserDataProfile {
   aboutMe: string;
   company?: string;
@@ -97,7 +96,6 @@ interface skillStats {
 
 type Difficulty = 'All' | 'Easy' | 'Medium' | 'Hard';
 
-//  ProblemData
 export interface ProblemSetQuestionListData {
   problemsetQuestionList: {
     total: number;
@@ -163,7 +161,6 @@ export interface TrendingDiscussionObject {
   };
 }
 
-// Contest type matching GraphQL query structure
 export interface Contest {
   title: string;
   titleSlug: string;
@@ -174,13 +171,11 @@ export interface Contest {
   containsPremium: boolean;
 }
 
-// Generic GraphQL params (username is most common)
 export interface GraphQLParams {
   username?: string;
   [key: string]: unknown;
 }
 
-// User profile specific GraphQL response
 export interface UserProfileResponse {
   matchedUser: {
     submitStats: {

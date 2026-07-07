@@ -4,7 +4,7 @@ export default function Loading() {
       <div className="mb-6 h-10 w-28 rounded-2xl bg-[#202f36]" />
       <div className="mx-auto max-w-5xl animate-pulse">
 
-        {/* VS Header */}
+        
         <div className="mb-6 rounded-[40px] border-2 border-b-8 border-[#37464f] bg-[#202f36] p-6 md:p-8">
           <div className="flex items-center justify-between">
             {[0, 1].map((i) => (
@@ -20,7 +20,7 @@ export default function Loading() {
           </div>
         </div>
 
-        {/* Core Performance */}
+        
         <h3 className="mb-4 text-center text-sm font-black uppercase tracking-[0.4em] text-zinc-500">
           Core Performance
         </h3>
@@ -37,7 +37,7 @@ export default function Loading() {
           ))}
         </div>
 
-        {/* Language Mastery */}
+        
         <h3 className="mb-4 text-center text-sm font-black uppercase tracking-[0.4em] text-zinc-500">
           Language Mastery
         </h3>
@@ -59,7 +59,7 @@ export default function Loading() {
           ))}
         </div>
 
-        {/* Skill Categories */}
+        
         <h3 className="mb-4 text-center text-sm font-black uppercase tracking-[0.4em] text-zinc-500">
           Skill Categories
         </h3>
@@ -80,7 +80,7 @@ export default function Loading() {
           ))}
         </div>
 
-        {/* Bottom Comparison Rows */}
+        
         <h3 className="mb-4 text-center text-sm font-black uppercase tracking-[0.4em] text-zinc-500">
           Comparison
         </h3>

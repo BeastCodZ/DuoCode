@@ -54,7 +54,6 @@ export async function getFullUser(
   ]);
 
 
-  // Map types to match LeetCodeProfile
   const mappedProfile: LeetCodeProfile = {
     username: profile.username,
     name: profile.name || '',
@@ -73,7 +72,6 @@ export async function getFullUser(
     about: profile.about || '',
   };
 
-  // Synthesize community data as it's not directly in the service yet
   const community: LeetCodeCommunity = {
     reputation: profile.reputation,
     trustScore: 0,

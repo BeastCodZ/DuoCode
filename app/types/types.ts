@@ -1,4 +1,3 @@
-// types/types.ts
 
 export interface SubmissionStat {
   difficulty: string;
@@ -245,7 +244,6 @@ export interface LeetCodeLanguageStats {
   };
 }
 
-// LatestAcceptedData for the latestAccepted property.
 export interface LeetCodeProblem {
   questionFrontendId: string;
   questionTitle: string;

@@ -161,7 +161,6 @@ const [a, b] = await Promise.all([
     .sort((x, y) => aSkills[y] + bSkills[y] - (aSkills[x] + bSkills[x]))
     .slice(0, 5);
 
-  // Languages comparison
   const getLangs = (data: FullUserData) => {
     return (data.languages?.matchedUser?.languageProblemCount || []).reduce(
       (acc, curr) => {
@@ -249,7 +248,7 @@ if (aPoints !== bPoints) {
     <main className="min-h-screen bg-[#131f24] text-white p-4 overflow-hidden">
       <div className="max-w-5xl mx-auto space-y-4">
         <BackButton />
-        {/* BATTLE HEADER */}
+        
         <AnimateIn direction="down" delay={0.1}>
           <div className="flex flex-col items-center">
             <Link href="/">
@@ -264,10 +263,10 @@ if (aPoints !== bPoints) {
           </div>
         </AnimateIn>
 
-        {/* VERSUS SECTION */}
+        
         <AnimateIn direction="scale" delay={0.2}>
           <div className="flex justify-between items-center bg-[#202f36] border-2 border-b-8 border-[#37464f] rounded-[40px] p-4 md:p-6 relative overflow-hidden group ">
-            {/* Decorative Background */}
+            
             <div className="absolute top-1/4 md:top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[8rem] md:text-[12rem] font-black text-white/5 pointer-events-none select-none italic group-hover:text-white/10 transition-colors">
               <AnimateIn
                 direction="scale"
@@ -300,7 +299,7 @@ if (aPoints !== bPoints) {
           </div>
         </AnimateIn>
 
-        {/* PERFORMANCE CATEGORIES */}
+        
         <div className="space-y-10">
           <AnimateIn direction="up" delay={0.3}>
             <div>
@@ -341,7 +340,7 @@ if (aPoints !== bPoints) {
             </div>
           </AnimateIn>
 
-          {/* LANGUAGE BATTLE */}
+          
           {commonLangs.length > 0 && (
             <AnimateIn direction="up" delay={0.4}>
               <div>
@@ -362,7 +361,7 @@ if (aPoints !== bPoints) {
               </div>
             </AnimateIn>
           )}
-          {/* SKILL BATTLE */}
+          
           {commonSkillNames.length > 0 && (
             <AnimateIn direction="up" delay={0.6}>
               <div>
@@ -383,7 +382,7 @@ if (aPoints !== bPoints) {
               </div>
             </AnimateIn>
           )}
-          {/* DIFFICULTY DRILL-DOWN */}
+          
           <AnimateIn direction="up" delay={0.7}>
             <div>
               <h3 className="text-center text-zinc-500 font-black uppercase text-sm tracking-[0.4em] mb-6">
@@ -411,7 +410,7 @@ if (aPoints !== bPoints) {
               </div>
             </div>
           </AnimateIn>
-          {/* COMMUNITY BATTLE */}
+          
           <AnimateIn direction="up" delay={0.5}>
             <div>
               <h3 className="text-center text-zinc-500 font-black uppercase text-sm tracking-[0.4em] mb-6">

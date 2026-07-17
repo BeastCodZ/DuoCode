@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/ab0aa828-5b93-4d7f-9f91-3994a42ecff7" alt="DuoCodZ Banner" width="100%">
+</p>
 
-## Getting Started
+<p align="center">
+  <strong>Duolingo for LeetCode</strong>
+</p>
 
-First, run the development server:
+<p align="center">
+  <a href="https://duocodz.vercel.app">Live Demo</a> •
+  <a href="#features">Features</a> •
+  <a href="#tech-stack">Tech Stack</a>
+</p>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## About
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Data Structures and Algorithms are an essential part of Computer Science. They teach you not only *how* to solve problems, but *why* a solution works, why another approach may not be optimal, and how to think like an engineer.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Platforms like LeetCode make this possible, but staying consistent requires discipline, patience, persistence, and motivation.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+DuoCode was created to make that journey more engaging. Instead of feeling like another competitive coding platform, it adds a more playful and interactive experience while helping you stay consistent with your DSA practice.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Profile Page** – View your LeetCode statistics and profile information.
+- **Compare Page** – Compare progress and statistics between two users.
+- **Home Page** – Central dashboard with navigation and quick access to features.
+- **Learn Page** – Integrated NeetCode 250 roadmap with progress tracking based on your LeetCode activity.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Screenshots
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Home | Profile |
+|------|---------|
+| <img src="https://github.com/user-attachments/assets/0c39e574-b1c4-458e-8b7d-4ab8d77b1025" width="100%"> | <img src="https://github.com/user-attachments/assets/40c49d26-12b3-4af4-8604-3cd9cd35f165" width="100%"> |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Compare | NeetCode 250 |
+|---------|-----------------|
+| <img src="https://github.com/user-attachments/assets/e061b182-03bd-4854-b884-02d03765cc9a" width="100%"> | <img src="https://github.com/user-attachments/assets/085e6399-0816-4301-9915-4175fad54e7e" width="100%"> |
+
+
+---
+
+## Tech Stack
+
+- **Next.js** – Full-stack React framework powering the frontend and API routes.
+- **GraphQL** – Fetches data from the LeetCode API.
+- **Framer Motion** – Animations and page transitions.
+- **Lucide React** – Modern icon library.
+- **React Icons** – Additional icon set.
+
+---
+
+## Acknowledgements
+
+Special thanks to **alfaarghya/alfa-leetcode-api** for serving as the foundation for the API.
+
+https://github.com/alfaarghya/alfa-leetcode-api

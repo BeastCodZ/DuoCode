@@ -230,6 +230,7 @@ export default function LearnPage() {
                 <Image
                   src="/banner.webp"
                   alt="DuoCode Banner"
+                loading="eager"
                   width={160}
                   height={160}
                   className="w-40 h-auto"

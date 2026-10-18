@@ -255,6 +255,7 @@ if (aPoints !== bPoints) {
               <Image
                 src="/banner.webp"
                 alt="DuoCode Banner"
+                loading="eager"
                 width={128}
                 height={128}
                 className="w-auto h-auto"

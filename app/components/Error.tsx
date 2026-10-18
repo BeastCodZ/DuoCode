@@ -92,6 +92,7 @@ export default function Error({
                 <Image
                   src="/banner.webp"
                   alt="DuoCode Banner"
+                loading="eager"
                   width={180}
                   height={64}
                   className="mt-2 w-48 h-auto"

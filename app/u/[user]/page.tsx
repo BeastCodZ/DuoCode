@@ -106,9 +106,9 @@ export default async function UserProfilePage({
     data?.solved.acSubmissionNum.find((s) => s.difficulty === "All")?.count || 0;
   const acceptanceRate = ((acSub / totalSub) * 100).toFixed(1);
 
-  const easyTotal = 949;
-  const mediumTotal = 2067;
-  const hardTotal = 942;
+  const easyTotal = 972;
+  const mediumTotal = 2130;
+  const hardTotal = 984;
 
   const allSkills = [
     ...(data?.skillStats?.tagProblemCounts?.fundamental || []),
@@ -162,6 +162,7 @@ export default async function UserProfilePage({
               <Image
                 src="/banner.webp"
                 alt="DuoCode Banner"
+                loading="eager"
                 width={128}
                 height={128}
                 className="w-auto h-auto"
@@ -268,7 +269,8 @@ export default async function UserProfilePage({
                     </a>
                   )}
                 </div>
-                <div className="flex flex-row flex-wrap gap-4">
+              </div>
+              <div className="flex flex-row flex-wrap gap-4">
                   {data?.badges.badges?.slice(0, 6).map((badge) => (
                     <BadgeIcon
                       key={badge.id}
@@ -277,7 +279,6 @@ export default async function UserProfilePage({
                     />
                   ))}
                 </div>
-              </div>
             </div>
           </div>
         </AnimateIn>
@@ -373,6 +374,12 @@ export default async function UserProfilePage({
                     total={hardTotal}
                     color="red"
                   />
+                  <ProgressBar
+                    label="Total"
+                    value={(data.solved.hardSolved ?? 0) + (data.solved.mediumSolved ?? 0) + (data.solved.easySolved ?? 0)}
+                    total = {easyTotal+mediumTotal+hardTotal}
+                    color="blue"
+                    />
                 </div>
               </div>
             </AnimateIn>

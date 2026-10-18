@@ -113,12 +113,14 @@ export default function HomePage() {
                   alt="DuoCode"
                   width={192}
                   height={192}
+                  loading="eager"
                   className="w-48 h-auto"
                 />
 
                 <Image
                   src="/banner.webp"
                   alt="DuoCode Banner"
+                  loading="eager"
                   width={128}
                   height={128}
                   className="mt-2 w-48 h-auto"
